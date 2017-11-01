@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">FoodRecipes</string>
+    <string name="display">WELCOME</string>
+    <string name="nextTextView">CLICK TO CONTINUE</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+
+    <string name="text_login">LOG IN</string>
+    <string name="text_register">SIGN UP</string>
+
+    <string name="error_empty_email">Email Address field is empty</string>
+    <string name="error_empty_password">Password field is empty</string>
+    <string name="error_empty_confirmPassword">Confirm Password field is empty</string>
+
+    <string name="error_message_email">Email Address in not valid.</string>
+    <string name="error_email_exists">Email Already Exists</string>
+    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+    <string name="error_validPassword">Password must includes 1 lowercase, 1 uppercase,
+                                                1 number and 1 special character </string>
+    <string name="error_validPassword2">Password must contain at least 6 characters </string>
+
+    <string name="success_message">Registration Successful</string>
+    <string name="text_not_member">Do not have an account? SIGN UP </string>
+    <string name="text_already_member">Already have an account? LOG IN</string>
+
+</resources>
