@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group8.tcss450.uw.edu.foodrecipes.DisplayActivity">>
+    tools:context="group8.tcss450.uw.edu.group8project.DisplayActivity">>
 
     <TextView
         android:layout_width="wrap_content"

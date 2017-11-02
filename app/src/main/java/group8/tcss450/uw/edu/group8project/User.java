@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group1project;
+package group8.tcss450.uw.edu.group8project;
 
 /**
  * Created by trinhnguyen on 10/31/17.

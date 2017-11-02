@@ -1,10 +1,6 @@
-package group8.tcss450.uw.edu.group1project;
+package group8.tcss450.uw.edu.group8project;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.TextView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;

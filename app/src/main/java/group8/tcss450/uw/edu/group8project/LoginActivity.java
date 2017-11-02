@@ -1,15 +1,13 @@
-package group8.tcss450.uw.edu.group1project;
+package group8.tcss450.uw.edu.group8project;
 
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.support.constraint.ConstraintLayout;
-        import android.support.design.widget.Snackbar;
-        import android.support.design.widget.TextInputEditText;
-        import android.support.design.widget.TextInputLayout;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.AppCompatButton;
-        import android.support.v7.widget.AppCompatTextView;
-        import android.view.View;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatTextView;
+import android.view.View;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,7 +18,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputEditText edittextEmail;
     private TextInputEditText edittextPassword;
 
-    private ConstraintLayout loginView;
     private AppCompatButton logIN;
     private AppCompatTextView signUP;
 
@@ -38,8 +35,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initObjects();
     }
     private void initViews(){
-        loginView = (ConstraintLayout) findViewById(R.id.loginView);
-
         layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
         layoutPassword = (TextInputLayout) findViewById(R.id.layoutPassword);
 
@@ -91,7 +86,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             emptyInputEditText();
             startActivity(accountsIntent);
         } else {
-            Snackbar.make(loginView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+            layoutEmail.setError(getString(R.string.login_error));
+            layoutPassword.setError(getString(R.string.login_error));
         }
     }
 

@@ -1,21 +1,15 @@
-package group8.tcss450.uw.edu.group1project;
+package group8.tcss450.uw.edu.group8project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
-import android.view.View;
-
-import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -90,14 +84,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void postDataToSQLite(){
 
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
+            emptyInputEditText();
             return;
         }
 
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            emptyInputEditText();
             return;
         }
 
         if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
+            emptyInputEditText();
             return;
         }
 
@@ -117,20 +114,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (!sqLiteHelper.checkUser(edittextEmail.getText().toString().trim())) {
-
             user.setEmail(edittextEmail.getText().toString().trim());
             user.setPassword(edittextPassword.getText().toString().trim());
-
             sqLiteHelper.addUser(user);
-
-            // Snack Bar to show success message that record saved successfully
-            Snackbar.make(signupView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.success_message, Toast.LENGTH_LONG).show();
             emptyInputEditText();
 
+            Intent inent = new Intent(this, LoginActivity.class);
+            startActivity(inent);
 
         } else {
-            // Snack Bar to show error message that record already exists
-            Snackbar.make(signupView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_email_exists, Toast.LENGTH_LONG).show();
+            emptyInputEditText();
         }
     }
 

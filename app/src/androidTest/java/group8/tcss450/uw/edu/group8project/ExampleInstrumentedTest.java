@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group1project;
+package group8.tcss450.uw.edu.group8project;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

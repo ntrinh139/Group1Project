@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "group8.tcss450.uw.edu.foodrecipes"
+        applicationId "group8.tcss450.uw.edu.group8project"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
