@@ -1,6 +1,7 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -9,7 +10,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate{
 
     private final AppCompatActivity activity = LoginActivity.this;
 
@@ -59,7 +60,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.logIN:
-                verifyFromSQLite();
+                AsyncTask<String, Void, Integer> task = new GetWebServiceTask();
+                ((GetWebServiceTask) task).delegate = this;
+                task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php",
+                        edittextEmail.getText().toString().trim(),
+                        edittextPassword.getText().toString().trim());
                 break;
             case R.id.signUP:
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -81,10 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (sqLiteHelper.checkUser(edittextEmail.getText().toString().trim()
                 , edittextPassword.getText().toString().trim())) {
-            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-            emptyInputEditText();
-            startActivity(accountsIntent);
+
         } else {
             layoutEmail.setError(getString(R.string.login_error));
             layoutPassword.setError(getString(R.string.login_error));
@@ -94,5 +96,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void emptyInputEditText(){
         edittextEmail.setText(null);
         edittextPassword.setText(null);
+    }
+
+    @Override
+    public void handleSuccess() {
+        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+        emptyInputEditText();
+        startActivity(accountsIntent);
+    }
+
+    @Override
+    public void handleFailure(String errorMessage) {
+    return;
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -120,8 +122,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(getApplicationContext(), R.string.success_message, Toast.LENGTH_LONG).show();
             emptyInputEditText();
 
-            Intent inent = new Intent(this, LoginActivity.class);
-            startActivity(inent);
+            RegistrationConfirmationFragment rFrag = new RegistrationConfirmationFragment();
+
+            loadFragment(rFrag);
 
         } else {
             Toast.makeText(getApplicationContext(), R.string.error_email_exists, Toast.LENGTH_LONG).show();
@@ -133,6 +136,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edittextEmail.setText(null);
         edittextPassword.setText(null);
         edittextConfirmPassword.setText(null);
+    }
+
+    private void loadFragment(Fragment frag) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.signupView, frag)
+                .addToBackStack(null);
+        // Commit the transaction
+        transaction.commit();
     }
 
 }
