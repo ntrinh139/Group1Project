@@ -18,8 +18,8 @@
     <string name="error_email_exists">Email Already Exists</string>
     <string name="error_password_match">Password Does Not Matches</string>
     <string name="error_valid_email_password">Wrong Email or Password</string>
-    <string name="error_validPassword">Password must includes 1 lowercase, 1 uppercase and
-                                                1 number </string>
+    <string name="error_validPassword">includes 1 lowercase, 1 uppercase, 1 special character
+                                        and 1 number </string>
     <string name="error_validPassword2">Password must contain at least 6 characters </string>
 
     <string name="login_error">Wrong Email or Password.</string>

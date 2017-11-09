@@ -1,7 +1,7 @@
 package group8.tcss450.uw.edu.group8project;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,8 +10,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,8 +38,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AppCompatTextView logIN;
 
     private InputValidation inputValidation;
-    private SQLiteHelper sqLiteHelper;
-    private User user;
+
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -67,15 +75,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initObjects(){
         inputValidation = new InputValidation(activity);
-        sqLiteHelper = new SQLiteHelper(activity);
-        user = new User();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onClick(View v){
         switch (v.getId()){
             case R.id.signUP:
-                postDataToSQLite();
+                checkValidation();
                 break;
             case R.id.logIN:
                 finish();
@@ -83,7 +90,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void postDataToSQLite(){
+    private void checkValidation(){
+
+        String email = edittextEmail.getText().toString().trim();
+        String password = edittextPassword.getText().toString().trim();
 
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             emptyInputEditText();
@@ -106,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
-                getString(R.string.error_validPassword), getString(R.string.error_validPassword2))) {
+                getString(R.string.error_validPassword2), getString(R.string.error_validPassword))) {
             return;
         }
 
@@ -115,21 +125,60 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        if (!sqLiteHelper.checkUser(edittextEmail.getText().toString().trim())) {
-            user.setEmail(edittextEmail.getText().toString().trim());
-            user.setPassword(edittextPassword.getText().toString().trim());
-            sqLiteHelper.addUser(user);
-            Toast.makeText(getApplicationContext(), R.string.success_message, Toast.LENGTH_LONG).show();
-            emptyInputEditText();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-            RegistrationConfirmationFragment rFrag = new RegistrationConfirmationFragment();
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(activity, "Authetication failed",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, "Authetication success. Now verify your email",
+                                    Toast.LENGTH_SHORT).show();
+                            emailVerification();
+                        }
 
-            loadFragment(rFrag);
+                        // ...
+                    }
+                });
+    }
 
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error_email_exists, Toast.LENGTH_LONG).show();
-            emptyInputEditText();
+    private void emailVerification() {
+        // Send verification email
+        // [START send_email_verification]
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this,
+                                    "Verification email sent to " + user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.e("TAG", "sendEmailVerification", task.getException());
+                            Toast.makeText(RegisterActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+
+        //DAVID the email verification is completed. you can check if this user email is verified yet
+        // then add to your database so we can you your database to log in validation.
+        if (user.isEmailVerified()) {
+
         }
+        // [END send_email_verification]
     }
 
     private void emptyInputEditText(){
