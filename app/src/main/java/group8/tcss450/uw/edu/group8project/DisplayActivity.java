@@ -1,9 +1,12 @@
 package group8.tcss450.uw.edu.group8project;
 
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class DisplayActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
 
@@ -34,8 +38,8 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
         SearchFragment f = new SearchFragment();
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.DisplayActivity, f)
-                .addToBackStack(null);
+                .replace(R.id.DisplayActivity, f);
+                //.addToBackStack(null);
         // Commit the transaction
         transaction.commit();
 
@@ -70,7 +74,35 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
         }
     }
 
+    public android.support.v4.app.Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = DisplayActivity.this.getSupportFragmentManager();
+        List<android.support.v4.app.Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(android.support.v4.app.Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+
+        if (getVisibleFragment() instanceof  SearchFragment) {
+            String nameFromIntent = getIntent().getStringExtra("EMAIL");
+            textViewName.setText("Welcome " + nameFromIntent+"\n\nRecipe Search:");
+        } else if (getVisibleFragment() instanceof DisplayFragment) {
+            textViewName.setText("Please click on the recipe to display instructions:");
+        }else {
+            Toast.makeText(getApplicationContext(), "else", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+
+    }
 
 
 
