@@ -4,15 +4,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/DisplayActivity"
     tools:context="group8.tcss450.uw.edu.group8project.DisplayActivity">>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="0dp"
         android:textSize="20sp"
         android:padding="16dp"  />
+
+
 
 </LinearLayout>

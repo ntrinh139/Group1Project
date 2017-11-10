@@ -30,4 +30,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="PromptA">Optional</string>
+    <string name="PromptB">Required</string>
+    <string name="CusineKey">Cusine</string>
+    <string name="IEKey">Include Ingrediants (comma seperated)</string>
+    <string name="EEKey">Exclude Ingrediants (comma seperated)</string>
+    <string name="DietKey">Diet</string>
+    <string name="QueryKey">Search Query</string>
+    <string name="NumKey">Number of Recepies (14 is the maximum capacity)</string>
+    <string name="SearchKey">Search</string>
+
+
 </resources>
