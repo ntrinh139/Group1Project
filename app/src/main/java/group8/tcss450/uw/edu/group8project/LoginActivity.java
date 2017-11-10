@@ -23,7 +23,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatTextView signUP;
 
     private InputValidation inputValidation;
-    private SQLiteHelper sqLiteHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initObjects(){
-        sqLiteHelper = new SQLiteHelper(activity);
         inputValidation = new InputValidation(activity);
     }
 
@@ -60,6 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.logIN:
+
+                verifyRegisteredUser();
+
                 AsyncTask<String, Void, Integer> task = new GetWebServiceTask();
                 ((GetWebServiceTask) task).delegate = this;
                 task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php",
@@ -73,25 +74,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void verifyFromSQLite(){
+    private void verifyRegisteredUser(){
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
+            emptyInputEditText();
             return;
         }
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
+            emptyInputEditText();
             return;
         }
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            emptyInputEditText();
             return;
         }
 
-        if (sqLiteHelper.checkUser(edittextEmail.getText().toString().trim()
-                , edittextPassword.getText().toString().trim())) {
+        /*
+        * Need to call database to check if the user's  is registered yet
+        * I created meethod checkIfEmailVerified already.
+        * -> if yes -> check if email they input email and password correctly
+        *           -> if yes -> search fragment
+        *           -> if no -> stay on log in page.
+        * -> if no -> display messgae the email is not registered yet.
+        */
 
-        } else {
-            layoutEmail.setError(getString(R.string.login_error));
-            layoutPassword.setError(getString(R.string.login_error));
-        }
     }
+
+//    private void checkIfEmailVerified() {
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        if (user.isEmailVerified()) {
+//            // user is verified, so you can finish this activity or send user to activity which you want.
+//
+//            Toast.makeText(activity, "Now you can log in", Toast.LENGTH_SHORT).show();
+//        }
+//        else  {
+//            Toast.makeText(activity, "Please verify your email before logging in", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void emptyInputEditText(){
         edittextEmail.setText(null);

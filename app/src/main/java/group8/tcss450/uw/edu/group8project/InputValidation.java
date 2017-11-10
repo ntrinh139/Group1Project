@@ -73,15 +73,25 @@ public class InputValidation {
 
         if (password.length() > 5) {
             if (value == false) {
-                layoutEditText.setError(message1);
+                layoutEditText.setError(message2);
                 hideKeyboardFrom(userEditText);
                 return false;
             } else {
+                hideKeyboardFrom(userEditText);
                 layoutEditText.setErrorEnabled(false);
             }
             return true;
         } else {
-            layoutEditText.setError(message2);
+            if (value == false) {
+                layoutEditText.setError(message1 +"\n" + message2);
+                hideKeyboardFrom(userEditText);
+                return false;
+            } else {
+                layoutEditText.setErrorEnabled(false);
+                hideKeyboardFrom(userEditText);
+            }
+            hideKeyboardFrom(userEditText);
+            layoutEditText.setError(message1);
         }
         return true;
     }

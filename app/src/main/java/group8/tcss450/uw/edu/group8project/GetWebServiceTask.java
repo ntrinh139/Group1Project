@@ -1,11 +1,7 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -31,7 +27,7 @@ public class GetWebServiceTask extends AsyncTask<String, Void, Integer> {
                 int responseCode = urlConnection.getResponseCode();
                 response = responseCode;
             } catch (Exception e) {
-                //Toast to the User that there was a network error.
+                //Toast to the user that there was a network error.
                 response = 500;
             } finally {
                 if (urlConnection != null)

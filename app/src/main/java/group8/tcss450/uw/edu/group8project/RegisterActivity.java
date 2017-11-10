@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -92,9 +90,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void checkValidation(){
 
-        String email = edittextEmail.getText().toString().trim();
-        String password = edittextPassword.getText().toString().trim();
-
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             emptyInputEditText();
             return;
@@ -112,18 +107,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
+            emptyInputEditText();
             return;
         }
 
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
-                getString(R.string.error_validPassword2), getString(R.string.error_validPassword))) {
+                getString(R.string.error_validPassword1), getString(R.string.error_validPassword2))) {
+            emptyInputEditText();
             return;
         }
 
         if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
                 layoutConfirmPassword, getString(R.string.error_password_match))) {
+            emptyInputEditText();
             return;
         }
+
+        String email = edittextEmail.getText().toString().trim();
+        String password = edittextPassword.getText().toString().trim();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -138,7 +139,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Toast.makeText(activity, "Authetication failed",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(activity, "Authetication success. Now verify your email",
+                            Toast.makeText(activity, "Authetication success. \nNow verify your email",
                                     Toast.LENGTH_SHORT).show();
                             emailVerification();
                         }
@@ -146,6 +147,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // ...
                     }
                 });
+
     }
 
     private void emailVerification() {
@@ -160,7 +162,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
+                                    "Verification email sent to " + user.getEmail()
+                                    + "\nPlease verify your email before logging in",
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -172,13 +175,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // [END_EXCLUDE]
                     }
                 });
-
-        //DAVID the email verification is completed. you can check if this user email is verified yet
-        // then add to your database so we can you your database to log in validation.
-        if (user.isEmailVerified()) {
-
-        }
-        // [END send_email_verification]
     }
 
     private void emptyInputEditText(){
@@ -186,15 +182,5 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edittextPassword.setText(null);
         edittextConfirmPassword.setText(null);
     }
-
-    private void loadFragment(Fragment frag) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.signupView, frag)
-                .addToBackStack(null);
-        // Commit the transaction
-        transaction.commit();
-    }
-
 }
 
