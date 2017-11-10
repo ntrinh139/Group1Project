@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by DavidMkrtychyan on 11/5/17.
+ * Created by David Mkrtychyan on 11/5/17.
  */
 
 public class GetWebServiceTask extends AsyncTask<String, Void, Integer> {

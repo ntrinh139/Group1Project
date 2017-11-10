@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         String email = edittextEmail.getText().toString().trim();
-        String password = edittextPassword.getText().toString().trim();
+        String password = edittextPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

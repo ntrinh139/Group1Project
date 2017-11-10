@@ -3,12 +3,20 @@ package group8.tcss450.uw.edu.group8project;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate{
 
@@ -23,6 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatTextView signUP;
 
     private InputValidation inputValidation;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +62,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initObjects(){
         inputValidation = new InputValidation(activity);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onClick(View v){
         switch (v.getId()){
             case R.id.logIN:
+                if (!areInputsValid()) {
+                    break;
+                }
+                String email = edittextEmail.getText().toString().trim();
+                String password = edittextPassword.getText().toString();
 
-                verifyRegisteredUser();
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                AsyncTask<String, Void, Integer> task = new GetWebServiceTask();
-                ((GetWebServiceTask) task).delegate = this;
-                task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php",
-                        edittextEmail.getText().toString().trim(),
-                        edittextPassword.getText().toString().trim());
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(activity, "Sign In failed",
+                                            Toast.LENGTH_SHORT).show();
+                                } else if (!mAuth.getCurrentUser().isEmailVerified()) {
+                                    Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+                                    accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+                                    emptyInputEditText();
+                                    startActivity(accountsIntent);
+                                }
+
+                                // ...
+                            }
+                        });
                 break;
+
             case R.id.signUP:
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
@@ -74,43 +107,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void verifyRegisteredUser(){
+    private boolean areInputsValid(){
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             emptyInputEditText();
-            return;
+            return false;
         }
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
             emptyInputEditText();
-            return;
+            return false;
         }
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
             emptyInputEditText();
-            return;
+            return false;
         }
-
-        /*
-        * Need to call database to check if the user's  is registered yet
-        * I created meethod checkIfEmailVerified already.
-        * -> if yes -> check if email they input email and password correctly
-        *           -> if yes -> search fragment
-        *           -> if no -> stay on log in page.
-        * -> if no -> display messgae the email is not registered yet.
-        */
-
+        return true;
     }
 
-//    private void checkIfEmailVerified() {
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        if (user.isEmailVerified()) {
-//            // user is verified, so you can finish this activity or send user to activity which you want.
-//
-//            Toast.makeText(activity, "Now you can log in", Toast.LENGTH_SHORT).show();
-//        }
-//        else  {
-//            Toast.makeText(activity, "Please verify your email before logging in", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private void emptyInputEditText(){
         edittextEmail.setText(null);
