@@ -16,7 +16,7 @@
         </activity>
         <activity android:name="group8.tcss450.uw.edu.group8project.LoginActivity" />
         <activity android:name="group8.tcss450.uw.edu.group8project.DisplayActivity" />
-        <activity android:name="group8.tcss450.uw.edu.group8project.RegisterActivity"></activity>
+        <activity android:name="group8.tcss450.uw.edu.group8project.RegisterActivity" />
     </application>
 
 </manifest>

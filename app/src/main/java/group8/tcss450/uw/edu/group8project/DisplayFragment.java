@@ -29,7 +29,7 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
     public void onStart () {
         super.onStart();
 
-        LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.fragmentDisplay);
+        LinearLayout linearLayout = getActivity().findViewById(R.id.fragmentDisplay);
 
         try {
             for (int i = 0; i < jsonObject.getInt("number") && i < 14 ; i++) {

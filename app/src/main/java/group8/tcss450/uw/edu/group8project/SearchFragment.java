@@ -45,7 +45,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
-        Button search = (Button) v.findViewById(R.id.button);
+        Button search = v.findViewById(R.id.button);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,17 +55,17 @@ public class SearchFragment extends Fragment {
 
                 StringBuffer sb = new StringBuffer(PARTIAL_URL);
 
-                TextView tv1 = (TextView) getActivity().findViewById(R.id.editTextCuisine);
+                TextView tv1 = getActivity().findViewById(R.id.editTextCuisine);
                 if (!tv1.getText().toString().isEmpty()) {
                     sb.append("cuisine="+tv1.getText().toString());
                 }
 
-                TextView tv2 = (TextView) getActivity().findViewById(R.id.editTextDiet);
+                TextView tv2 = getActivity().findViewById(R.id.editTextDiet);
                 if (!tv2.getText().toString().isEmpty()) {
                     sb.append("&diet="+tv2.getText().toString());
                 }
 
-                TextView tv3 = (TextView) getActivity().findViewById(R.id.editTextExcludeIngredients);
+                TextView tv3 = getActivity().findViewById(R.id.editTextExcludeIngredients);
                 if (!tv3.getText().toString().isEmpty()) {
                     String [] ex = tv3.getText().toString().split(",");
                     sb.append("&excludeIngredients="+ex[0]);
@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment {
                     }
                 }
 
-                TextView tv4 = (TextView) getActivity().findViewById(R.id.editTextIncludeIngredients);
+                TextView tv4 = getActivity().findViewById(R.id.editTextIncludeIngredients);
                 if (!tv4.getText().toString().isEmpty()) {
                     String [] in = tv4.getText().toString().split(",");
                     sb.append("&includeIngredients="+in[0]);
@@ -85,14 +85,14 @@ public class SearchFragment extends Fragment {
 
                 sb.append("&limitLicense=false");
 
-                TextView tv5 = (TextView) getActivity().findViewById(R.id.editTextNumber);
+                TextView tv5 = getActivity().findViewById(R.id.editTextNumber);
                 if (!tv5.getText().toString().isEmpty()) {
                     sb.append("&number="+tv5.getText().toString());
                     try {
                         numOfRecipes = Integer.parseInt(tv5.getText().toString());
                         sb.append("&offset=0");
 
-                        TextView tv6 = (TextView) getActivity().findViewById(R.id.editTextQuery);
+                        TextView tv6 = getActivity().findViewById(R.id.editTextQuery);
                         if (!tv6.getText().toString().isEmpty()) {
                             sb.append("&query="+tv6.getText().toString());
                         }

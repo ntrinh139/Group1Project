@@ -2,6 +2,7 @@ package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class display user's email and the feature "search recipes"
@@ -71,9 +73,10 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
 
     public android.support.v4.app.Fragment getVisibleFragment(){
         FragmentManager fragmentManager = DisplayActivity.this.getSupportFragmentManager();
-        List<android.support.v4.app.Fragment> fragments = fragmentManager.getFragments();
-        if(fragments != null){
-            for(android.support.v4.app.Fragment fragment : fragments){
+        AtomicReference<List<Fragment>> fragments = new AtomicReference<List<Fragment>>();
+        fragments.set(fragmentManager.getFragments());
+        if(fragments.get() != null){
+            for(android.support.v4.app.Fragment fragment : fragments.get()){
                 if(fragment != null && fragment.isVisible())
                     return fragment;
             }
