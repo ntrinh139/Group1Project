@@ -1,9 +1,12 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.TextUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by David Mkrtychyan on 11/5/17.
@@ -18,11 +21,13 @@ public class GetWebServiceTask extends AsyncTask<String, Void, Integer> {
             }
             Integer response = null;
             HttpURLConnection urlConnection = null;
-            String url = strings[0];
-            String emailQuery = "?email=" + strings[1];
-            String passwordQuery = "&password=" + strings[2];
+
             try {
-                URL urlObject = new URL(url + emailQuery + passwordQuery);
+                String url = strings[0];
+                String emailQuery = "?email=" + URLEncoder.encode(strings[1], "utf-8");
+                String passwordQuery = "&password=" + URLEncoder.encode(strings[2], "utf-8");
+                String urlString = url + emailQuery + passwordQuery;
+                URL urlObject = new URL(urlString);
                 urlConnection = (HttpURLConnection) urlObject.openConnection();
                 int responseCode = urlConnection.getResponseCode();
                 response = responseCode;

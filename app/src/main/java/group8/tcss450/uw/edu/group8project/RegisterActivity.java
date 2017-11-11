@@ -1,5 +1,6 @@
 package group8.tcss450.uw.edu.group8project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -18,7 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate {
 
     private final AppCompatActivity activity = RegisterActivity.this;
 
@@ -123,9 +124,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        String email = edittextEmail.getText().toString().trim();
-        String password = edittextPassword.getText().toString();
-
+        final String email = edittextEmail.getText().toString().trim();
+        final String password = edittextPassword.getText().toString();
+        final GetWebServiceTask registerTask = new GetWebServiceTask();
+        registerTask.delegate = this;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -136,12 +138,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(activity, "Authetication failed",
-                                    Toast.LENGTH_SHORT).show();
+                            handleFailure("");
                         } else {
-                            Toast.makeText(activity, "Authetication success. \nNow verify your email",
-                                    Toast.LENGTH_SHORT).show();
-                            emailVerification();
+                            registerTask.execute("http://cssgate.insttech.washington.edu/~davidmk/register.php", email, password);
                         }
 
                         // ...
@@ -181,6 +180,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edittextEmail.setText(null);
         edittextPassword.setText(null);
         edittextConfirmPassword.setText(null);
+    }
+
+    @Override
+    public void handleSuccess() {
+        Toast.makeText(activity, "Authetication success. \nNow verify your email",
+                Toast.LENGTH_SHORT).show();
+        emailVerification();
+    }
+
+    @Override
+    public void handleFailure(String errorMessage) {
+        Toast.makeText(activity, "Authetication failed",
+                Toast.LENGTH_SHORT).show();
     }
 }
 

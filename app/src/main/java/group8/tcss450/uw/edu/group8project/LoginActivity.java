@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,7 +33,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private InputValidation inputValidation;
     private FirebaseAuth mAuth;
-
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,32 +74,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!areInputsValid()) {
                     break;
                 }
-                String email = edittextEmail.getText().toString().trim();
-                String password = edittextPassword.getText().toString();
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(activity, "Sign In failed",
-                                            Toast.LENGTH_SHORT).show();
-                                } else if (!mAuth.getCurrentUser().isEmailVerified()) {
-                                    Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-                                    accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-                                    emptyInputEditText();
-                                    startActivity(accountsIntent);
-                                }
-
-                                // ...
-                            }
-                        });
+                email = edittextEmail.getText().toString().trim();
+                password = edittextPassword.getText().toString();
+                GetWebServiceTask task = new GetWebServiceTask();
+                task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php", email, password);
+                task.delegate = this;
                 break;
 
             case R.id.signUP:
@@ -109,15 +90,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean areInputsValid(){
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
-            emptyInputEditText();
             return false;
         }
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
-            emptyInputEditText();
             return false;
         }
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
-            emptyInputEditText();
             return false;
         }
         return true;
@@ -131,14 +109,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void handleSuccess() {
-        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-        emptyInputEditText();
-        startActivity(accountsIntent);
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // [START_EXCLUDE]
+
+                        if (!task.isSuccessful()) {
+                            handleFailure("");
+
+                        } else {
+                            if (!mAuth.getCurrentUser().isEmailVerified()) {
+                                Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+                                accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+                                emptyInputEditText();
+                                startActivity(accountsIntent);
+                            }
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+
+
+
     }
 
     @Override
     public void handleFailure(String errorMessage) {
-    return;
+        Toast.makeText(activity, "Sign In failed, please try again.",
+                Toast.LENGTH_SHORT).show();
+        return;
     }
 }
