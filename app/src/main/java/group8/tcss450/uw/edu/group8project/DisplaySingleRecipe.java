@@ -12,12 +12,10 @@ import org.json.JSONObject;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * This activity display a recipe
+ * based on user input
  */
 public class DisplaySingleRecipe extends Fragment {
-
-
-    private JSONObject recipeDetails;
     public DisplaySingleRecipe() {
         // Required empty public constructor
     }
@@ -27,11 +25,9 @@ public class DisplaySingleRecipe extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             try {
-                TextView tv = (TextView) getActivity().findViewById(R.id.displayRecipe);
-                // tv.setText(getArguments().getString("recipeDetails"));
-                //recipeDetails = new JSONObject(getArguments().getString("recipeDetails"));
+                TextView tv = getActivity().findViewById(R.id.displayRecipe);
             } catch (Exception e) {
-                throw new RuntimeException(getContext()+"  Couldnt parse json");
+                throw new RuntimeException(getContext()+"  Could not parse json");
             }
         }
 
@@ -40,9 +36,9 @@ public class DisplaySingleRecipe extends Fragment {
     public void onStart () {
         super.onStart();
         try {
-            TextView tv = (TextView) getActivity().findViewById(R.id.displayRecipe);
+            TextView tv = getActivity().findViewById(R.id.displayRecipe);
             tv.setText(getArguments().getString("recipeDetails"));
-            recipeDetails = new JSONObject(getArguments().getString("recipeDetails"));
+            JSONObject recipeDetails = new JSONObject(getArguments().getString("recipeDetails"));
         } catch (Exception e) {
 
         }

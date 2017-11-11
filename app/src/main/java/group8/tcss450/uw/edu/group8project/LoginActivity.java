@@ -1,7 +1,6 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -9,7 +8,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,8 +15,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * LoginActivity class display log in layout
+ * where user input there email and password
+ * System will check if the email and password is registered
+ * and email is veried yet.
+ * It failed -> staying on login layout
+ *    passed -> go to DisplayActivty
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate{
 
     private final AppCompatActivity activity = LoginActivity.this;
@@ -36,17 +41,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String email;
     private String password;
 
+    /*
+     * Initialize activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
-        initViews();
-        initListeners();
-        initObjects();
-    }
-    private void initViews(){
+        //initialize views
         layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
         layoutPassword = (TextInputLayout) findViewById(R.id.layoutPassword);
 
@@ -55,18 +59,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         logIN = (AppCompatButton) findViewById(R.id.logIN);
         signUP = (AppCompatTextView) findViewById(R.id.signUP);
-    }
 
-    private void initListeners(){
+        //initialize listeners
         logIN.setOnClickListener(this);
         signUP.setOnClickListener(this);
-    }
 
-    private void initObjects(){
+        //initialize objects
         inputValidation = new InputValidation(activity);
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /*
+     * Launch activity if different button is pressed
+     * If click signup -> launch RegisterActivity
+     * If click log in -> check authentication and email verification
+     */
     @Override
     public void onClick(View v){
         switch (v.getId()){
@@ -88,20 +95,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /*
+     * This method checks if the validation of input
+     */
     private boolean areInputsValid(){
+
+        //check if email field is filled.
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             return false;
         }
+
+        //check if email is in valid format (example@hehe.haha)
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
             return false;
         }
+
+        //check if password field is filled.
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
             return false;
         }
         return true;
     }
 
-
+    /*
+     * This method empty all the edit text field
+     * when users input wrong information
+     */
     private void emptyInputEditText(){
         edittextEmail.setText(null);
         edittextPassword.setText(null);
@@ -128,11 +147,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(accountsIntent);
                             }
                         }
-                        // [END_EXCLUDE]
                     }
                 });
-
-
 
     }
 

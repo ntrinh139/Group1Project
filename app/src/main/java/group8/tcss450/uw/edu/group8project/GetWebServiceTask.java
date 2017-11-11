@@ -1,9 +1,6 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
-import android.text.Html;
-import android.text.TextUtils;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;

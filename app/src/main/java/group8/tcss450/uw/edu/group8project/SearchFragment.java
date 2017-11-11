@@ -1,7 +1,6 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -29,8 +25,6 @@ import java.net.URL;
  * to handle interaction events.
  */
 public class SearchFragment extends Fragment {
-
-
     protected OnFragmentInteractionListener mListener;
     private int numOfRecipes;
 
@@ -40,7 +34,6 @@ public class SearchFragment extends Fragment {
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

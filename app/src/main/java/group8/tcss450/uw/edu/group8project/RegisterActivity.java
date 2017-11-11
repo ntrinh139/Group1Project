@@ -3,7 +3,6 @@ package group8.tcss450.uw.edu.group8project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +18,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * RegisterActivity class display sign up layout
+ * where user input there email, password and confirm password
+ * System will check the validation of user's input,,
+ * send email verification if pass authentication
+ */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate {
 
     private final AppCompatActivity activity = RegisterActivity.this;
-
-    private ConstraintLayout signupView;
 
     private TextInputLayout layoutEmail;
     private TextInputLayout layoutPassword;
@@ -41,20 +44,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
 
 
+    /*
+     * Initialize activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
 
-        initViews();
-        initListeners();
-        initObjects();
-    }
-
-    private void initViews(){
-        signupView = (ConstraintLayout) findViewById(R.id.signupView);
-
+        //initialize views
         layoutEmail = (TextInputLayout) findViewById(R.id.layoutEmail);
         layoutPassword = (TextInputLayout) findViewById(R.id.layoutPassword);
         layoutConfirmPassword = (TextInputLayout) findViewById(R.id.layoutConfirmPassword);
@@ -65,100 +64,111 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         signUP = (AppCompatButton) findViewById(R.id.signUP);
         logIN = (AppCompatTextView) findViewById(R.id.logIN);
-    }
 
-    private void initListeners(){
+        //initialize listener
         signUP.setOnClickListener(this);
         logIN.setOnClickListener(this);
-    }
 
-    private void initObjects(){
+        //initialize objects
         inputValidation = new InputValidation(activity);
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /*
+     * Launch activity if different button is pressed
+     * If click signup -> check authentication and send email verification
+     * If click log in -> launch Loginactivity
+     */
     @Override
     public void onClick(View v){
         switch (v.getId()){
             case R.id.signUP:
-                checkValidation();
+                if (!areInputsValid()) {
+                    break;
+                }
+
+                final String email = edittextEmail.getText().toString().trim();
+                final String password = edittextPassword.getText().toString();
+
+                final GetWebServiceTask registerTask = new GetWebServiceTask();
+                registerTask.delegate = this;
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                                if (!task.isSuccessful()) {
+                                    handleFailure("");
+                                } else {
+                                    registerTask.execute("http://cssgate.insttech.washington.edu/~davidmk/register.php", email, password);
+                                }
+                            }
+                        });
+
                 break;
             case R.id.logIN:
-                finish();
+                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intentLogin);
                 break;
         }
     }
 
-    private void checkValidation(){
+    private boolean areInputsValid(){
 
+        //check if email field is filled
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
+        //check if password field is filled
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
+        //check if the confirm password is filled
         if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
-
+        //check if email is in valid format (example@hehe.haha)
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
+        //check if password is valid (at least 6 characters
+        // including 1 lower, 1 upper, 1 special character and 1 number.
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
                 getString(R.string.error_validPassword1), getString(R.string.error_validPassword2))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
+        //check if password and confirm password are matched
         if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
                 layoutConfirmPassword, getString(R.string.error_password_match))) {
             emptyInputEditText();
-            return;
+            return false;
         }
 
-        final String email = edittextEmail.getText().toString().trim();
-        final String password = edittextPassword.getText().toString();
-        final GetWebServiceTask registerTask = new GetWebServiceTask();
-        registerTask.delegate = this;
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            handleFailure("");
-                        } else {
-                            registerTask.execute("http://cssgate.insttech.washington.edu/~davidmk/register.php", email, password);
-                        }
-
-                        // ...
-                    }
-                });
-
+        return true;
     }
 
+    /*
+     * The method will send user an email verification
+     * after checking email and password authentication
+     * Users need to verify their email before logging in
+     */
     private void emailVerification() {
         // Send verification email
-        // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this,
                                     "Verification email sent to " + user.getEmail()
@@ -171,11 +181,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // [END_EXCLUDE]
                     }
                 });
     }
 
+    /*
+     * This method empty all the edit text field
+     * when users input wrong information
+     */
     private void emptyInputEditText(){
         edittextEmail.setText(null);
         edittextPassword.setText(null);

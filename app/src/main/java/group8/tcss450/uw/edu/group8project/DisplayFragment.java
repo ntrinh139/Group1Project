@@ -1,19 +1,15 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,8 +28,6 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart () {
         super.onStart();
-
-
 
         LinearLayout linearLayout = (LinearLayout) getActivity().findViewById(R.id.fragmentDisplay);
 

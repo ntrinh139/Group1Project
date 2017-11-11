@@ -1,19 +1,13 @@
 package group8.tcss450.uw.edu.group8project;
 
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +15,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * This class display user's email and the feature "search recipes"
+ * after successfully signing in
+ */
 public class DisplayActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
 
     private TextView textViewName;
@@ -39,8 +37,6 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.DisplayActivity, f);
-                //.addToBackStack(null);
-        // Commit the transaction
         transaction.commit();
 
     }
@@ -58,7 +54,6 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
                 .beginTransaction()
                 .replace(R.id.DisplayActivity, f)
                 .addToBackStack(null);
-        // Commit the transaction
         transaction.commit();
     }
 
@@ -89,8 +84,6 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
         if (getVisibleFragment() instanceof  SearchFragment) {
             String nameFromIntent = getIntent().getStringExtra("EMAIL");
             textViewName.setText("Welcome " + nameFromIntent+"\n\nRecipe Search:");
@@ -100,12 +93,7 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
             Toast.makeText(getApplicationContext(), "else", Toast.LENGTH_LONG)
                     .show();
         }
-
-
     }
-
-
-
 
     private class WebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = null;
