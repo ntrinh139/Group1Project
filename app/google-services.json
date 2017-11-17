@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "249002579420-8r9cr97r35did56hgfr0a1r48urb4eim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "group8.tcss450.uw.edu.group8project",
+            "certificate_hash": "b330986aee2a10d5f33d9eb6390692d779b980f0"
+          }
+        },
+        {
           "client_id": "249002579420-gcb5j82tqmrj44781dmfnmkcu79com28.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249002579420-gcb5j82tqmrj44781dmfnmkcu79com28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

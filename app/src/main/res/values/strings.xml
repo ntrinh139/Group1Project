@@ -14,13 +14,13 @@
     <string name="error_empty_password">Password field is empty</string>
     <string name="error_empty_confirmPassword">Confirm Password field is empty</string>
 
-    <string name="error_message_email">Email Address in not valid.</string>
+    <string name="error_message_email">Email Address is not valid.</string>
     <string name="error_email_exists">Email Already Exists</string>
-    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="error_password_match">Passwords Do Not Match</string>
     <string name="error_valid_email_password">Wrong Email or Password</string>
-    <string name="error_validPassword2">Password must includes 1 lowercase, 1 uppercase, 1 special character
+    <string name="error_validPassword2">Password must include 1 lowercase, 1 uppercase, 1 special character
                                         and 1 number </string>
-    <string name="error_validPassword1">Password must contains at least 6 characters </string>
+    <string name="error_validPassword1">Password must contain at least 6 characters </string>
 
     <string name="login_error">Wrong Email or Password.</string>
     <string name="success_message">Registration Successful.</string>
@@ -33,12 +33,12 @@
 
     <string name="PromptA">Optional</string>
     <string name="PromptB">Required</string>
-    <string name="CusineKey">Cusine</string>
-    <string name="IEKey">Include Ingrediants (comma separated)</string>
-    <string name="EEKey">Exclude Ingrediants (comma separated)</string>
+    <string name="CusineKey">Cuisine</string>
+    <string name="IEKey">Include Ingredients (comma separated)</string>
+    <string name="EEKey">Exclude Ingredients (comma separated)</string>
     <string name="DietKey">Diet</string>
     <string name="QueryKey">Search Query</string>
-    <string name="NumKey">Number of Recepies (14 is the maximum capacity)</string>
+    <string name="NumKey">Number of Recipes (14 is the maximum capacity)</string>
     <string name="SearchKey">Search</string>
 
 

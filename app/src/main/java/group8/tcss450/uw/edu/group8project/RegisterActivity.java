@@ -90,8 +90,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 final String email = edittextEmail.getText().toString().trim();
                 final String password = edittextPassword.getText().toString();
 
-                final GetWebServiceTask registerTask = new GetWebServiceTask();
-                registerTask.delegate = this;
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -100,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 if (!task.isSuccessful()) {
                                     handleFailure("");
                                 } else {
-                                    registerTask.execute("http://cssgate.insttech.washington.edu/~davidmk/register.php", email, password);
+                                    handleSuccess();
                                 }
                             }
                         });
@@ -117,25 +115,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //check if email field is filled
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
-            emptyInputEditText();
-            return false;
-        }
-
-        //check if password field is filled
-        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
-            emptyInputEditText();
-            return false;
-        }
-
-        //check if the confirm password is filled
-        if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
-            emptyInputEditText();
+            edittextEmail.requestFocus();
             return false;
         }
 
         //check if email is in valid format (example@hehe.haha)
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
-            emptyInputEditText();
+            edittextEmail.requestFocus();
+            return false;
+        }
+
+        //check if password field is filled
+        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            edittextPassword.requestFocus();
             return false;
         }
 
@@ -143,14 +135,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         // including 1 lower, 1 upper, 1 special character and 1 number.
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
                 getString(R.string.error_validPassword1), getString(R.string.error_validPassword2))) {
-            emptyInputEditText();
+            edittextPassword.requestFocus();
+            return false;
+        }
+
+        //check if the confirm password is filled
+        if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
+            edittextConfirmPassword.requestFocus();
             return false;
         }
 
         //check if password and confirm password are matched
         if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
                 layoutConfirmPassword, getString(R.string.error_password_match))) {
-            emptyInputEditText();
+            edittextConfirmPassword.requestFocus();
             return false;
         }
 
@@ -184,17 +182,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
-
-    /*
-     * This method empty all the edit text field
-     * when users input wrong information
-     */
-    private void emptyInputEditText(){
-        edittextEmail.setText(null);
-        edittextPassword.setText(null);
-        edittextConfirmPassword.setText(null);
-    }
-
     @Override
     public void handleSuccess() {
         Toast.makeText(activity, "Authetication success. \nNow verify your email",

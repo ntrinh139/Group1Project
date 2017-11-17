@@ -83,9 +83,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 email = edittextEmail.getText().toString().trim();
                 password = edittextPassword.getText().toString();
-                GetWebServiceTask task = new GetWebServiceTask();
-                task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php", email, password);
-                task.delegate = this;
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // [START_EXCLUDE]
+
+                                if (!task.isSuccessful()) {
+                                    handleFailure("");
+
+                                } else {
+                                    if (!mAuth.getCurrentUser().isEmailVerified()) {
+                                        Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+                                        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+                                        startActivity(accountsIntent);
+                                    }
+                                }
+                            }
+                        });
                 break;
 
             case R.id.signUP:
@@ -102,53 +119,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //check if email field is filled.
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
+            edittextEmail.requestFocus();
             return false;
         }
 
         //check if email is in valid format (example@hehe.haha)
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
+            edittextEmail.requestFocus();
             return false;
         }
 
         //check if password field is filled.
         if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            edittextPassword.requestFocus();
             return false;
         }
         return true;
     }
 
-    /*
-     * This method empty all the edit text field
-     * when users input wrong information
-     */
-    private void emptyInputEditText(){
-        edittextEmail.setText(null);
-        edittextPassword.setText(null);
-    }
 
     @Override
     public void handleSuccess() {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // [START_EXCLUDE]
 
-                        if (!task.isSuccessful()) {
-                            handleFailure("");
-
-                        } else {
-                            if (!mAuth.getCurrentUser().isEmailVerified()) {
-                                Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
-                            } else {
-                                Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-                                accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-                                emptyInputEditText();
-                                startActivity(accountsIntent);
-                            }
-                        }
-                    }
-                });
 
     }
 
