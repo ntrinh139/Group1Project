@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -37,8 +38,11 @@ public class DisplaySingleRecipe extends Fragment {
         super.onStart();
         try {
             TextView tv = getActivity().findViewById(R.id.displayRecipe);
-            tv.setText(getArguments().getString("recipeDetails"));
-            JSONObject recipeDetails = new JSONObject(getArguments().getString("recipeDetails"));
+
+            JSONArray recipeDetails =
+                    new JSONArray(getArguments().getString("recipeDetails"));
+            tv.setText(recipeDetails.getJSONObject(0).getJSONObject("steps").toString());
+
         } catch (Exception e) {
 
         }

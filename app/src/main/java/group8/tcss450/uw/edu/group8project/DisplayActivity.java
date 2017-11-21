@@ -2,10 +2,17 @@ package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONObject;
@@ -24,28 +31,71 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DisplayActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
 
     private TextView textViewName;
+    private SearchFragment survay;
+    private HomeFragment home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        textViewName = (TextView) findViewById(R.id.text);
-        String nameFromIntent = getIntent().getStringExtra("EMAIL");
-        textViewName.setText("Welcome " + nameFromIntent+"\n\nRecipe Search:");
-
-
-        SearchFragment f = new SearchFragment();
+        survay = new SearchFragment();
+        home = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("EMAIL", getIntent().getStringExtra("EMAIL"));
+        home.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.DisplayActivity, f);
+                .replace(R.id.DisplayActivity, home)
+                .addToBackStack(null);
         transaction.commit();
+
+        BottomNavigationView bar = (BottomNavigationView) findViewById(R.id.navigation);
+        bar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+               ;
+
+                switch (item.getItemId()){
+                    case R.id.survey:
+
+                        FragmentTransaction transaction = getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.DisplayActivity, survay)
+                                .addToBackStack(null);
+                        transaction.commit();
+                        break;
+
+
+                    case R.id.home:
+
+                        Bundle args = new Bundle();
+                        args.putSerializable("EMAIL", getIntent().getStringExtra("EMAIL"));
+                        home.setArguments(args);
+                        FragmentTransaction transaction2 = getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.DisplayActivity, home)
+                                .addToBackStack(null);
+                        transaction2.commit();
+                        break;
+
+                }
+
+
+
+
+                return true;
+            }
+        });
+
+
 
     }
 
+
     @Override
     public void onFragmentInteraction(String json, int num) {
-        textViewName.setText("Please click on the recipe to display instructions:");
+//        textViewName.setText("Please click on the recipe to display instructions:");
 
         DisplayFragment f = new DisplayFragment();
         Bundle args = new Bundle();
@@ -61,7 +111,6 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
 
     @Override
     public void onFragmentInteraction2(JSONObject jsonObject, int recipeIndex) {
-        textViewName.setText("Json that contain the steps and ingrediants:");
         try {
             int id = Integer.parseInt(jsonObject.getJSONArray("results").getJSONObject(recipeIndex).getString("id"));
             AsyncTask<String, Void, String> task = new WebServiceTask();
