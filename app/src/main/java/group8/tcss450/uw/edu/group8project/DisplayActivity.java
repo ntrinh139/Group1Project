@@ -136,15 +136,7 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (getVisibleFragment() instanceof  SearchFragment) {
-            String nameFromIntent = getIntent().getStringExtra("EMAIL");
-            textViewName.setText("Welcome " + nameFromIntent+"\n\nRecipe Search:");
-        } else if (getVisibleFragment() instanceof DisplayFragment) {
-            textViewName.setText("Please click on the recipe to display instructions:");
-        }else {
-            Toast.makeText(getApplicationContext(), "else", Toast.LENGTH_LONG)
-                    .show();
-        }
+
     }
 
     private class WebServiceTask extends AsyncTask<String, Void, String> {

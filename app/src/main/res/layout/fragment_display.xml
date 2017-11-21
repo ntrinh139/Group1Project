@@ -1,3 +1,10 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayActivity">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentDisplay"
@@ -7,3 +14,4 @@
     tools:context="group8.tcss450.uw.edu.group8project.DisplayFragment">
 </LinearLayout>
 
+</ScrollView>

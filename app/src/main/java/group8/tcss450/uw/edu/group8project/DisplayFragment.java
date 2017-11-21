@@ -1,15 +1,22 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,11 +40,23 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
 
         try {
             for (int i = 0; i < jsonObject.getInt("number") && i < 14 ; i++) {
+
+                WebView web = new WebView(getContext());
+
+                web.setLayoutParams(new LinearLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, 500));
+                web.getSettings().setLoadWithOverviewMode(true);
+                web.getSettings().setUseWideViewPort(true);
+                //web.scrollTo(0, web.getChildAt(0).getHeight()/2);
+                web.loadUrl(jsonObject.getJSONArray("results").getJSONObject(i).getString("image"));
+
+
+
                 TextView newTV = new TextView(getContext());
                 newTV.setOnClickListener(this);
                 newTV.setId(i);
                 newTV.setText(jsonObject.getJSONArray("results").getJSONObject(i).getString("title")+"\n");
 
+                linearLayout.addView(web);
                 linearLayout.addView(newTV);
             }
         } catch (Exception e) {
@@ -103,4 +122,6 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction2(JSONObject jsonObject, int recipeIndex);
     }
+
+
 }
