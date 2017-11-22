@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +22,17 @@ import java.net.URL;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchFragment.OnFragmentInteractionListener} interface
+ * {@link SurveyFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class SearchFragment extends Fragment {
+public class SurveyFragment extends Fragment {
     protected OnFragmentInteractionListener mListener;
     private int numOfRecipes;
 
     private static final String PARTIAL_URL
             = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?";
 
-    public SearchFragment() {
+    public SurveyFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +45,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_search, container, false);
+        View v = inflater.inflate(R.layout.fragment_survey, container, false);
         Button search = v.findViewById(R.id.button);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +192,29 @@ public class SearchFragment extends Fragment {
 
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    // handle back button's click listener
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 }

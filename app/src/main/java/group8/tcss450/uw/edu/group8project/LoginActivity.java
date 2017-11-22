@@ -137,6 +137,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 
     @Override
     public void handleSuccess() {

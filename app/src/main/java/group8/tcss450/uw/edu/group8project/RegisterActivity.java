@@ -182,6 +182,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
     @Override
     public void handleSuccess() {
         Toast.makeText(activity, "Authetication success. \nNow verify your email",

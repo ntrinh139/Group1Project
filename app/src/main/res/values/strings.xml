@@ -3,8 +3,8 @@
     <string name="display">WELCOME</string>
     <string name="nextTextView">CLICK TO CONTINUE</string>
 
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
+    <string name="hint_email">Email (example@haha.hehe)</string>
+    <string name="hint_password">Password (6 characters-upper,lower,special character,number)</string>
     <string name="hint_confirm_password">Confirm Password</string>
 
     <string name="text_login">LOG IN</string>

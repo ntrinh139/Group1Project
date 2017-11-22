@@ -1,21 +1,26 @@
 package group8.tcss450.uw.edu.group8project;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,18 +33,21 @@ import java.util.concurrent.atomic.AtomicReference;
  * This class display user's email and the feature "search recipes"
  * after successfully signing in
  */
-public class DisplayActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
+public class DisplayActivity extends AppCompatActivity implements SurveyFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
 
     private TextView textViewName;
-    private SearchFragment survay;
+    private SurveyFragment survay;
     private HomeFragment home;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        survay = new SearchFragment();
+        survay = new SurveyFragment();
         home = new HomeFragment();
         Bundle args = new Bundle();
         args.putSerializable("EMAIL", getIntent().getStringExtra("EMAIL"));
@@ -87,11 +95,53 @@ public class DisplayActivity extends AppCompatActivity implements SearchFragment
                 return true;
             }
         });
-
-
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_logout) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(DisplayActivity.this);
+
+            // Setting Dialog Title
+            alertDialog.setTitle("Confirm Exit...");
+
+            // Setting Dialog Message
+            alertDialog.setMessage("Are you sure you want to EXIT ?");
+
+            // Setting Positive "Yes" Button
+            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    firebaseAuth.signOut();
+                    dialog.cancel();
+                    finish();
+
+                    //opening profile activity
+                    startActivity(new Intent(DisplayActivity.this, MainActivity.class));
+
+                }
+            });
+
+            // Setting Negative "NO" Button
+            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            // Showing Alert Message
+            alertDialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onFragmentInteraction(String json, int num) {
