@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class display user's email and the feature "search recipes"
@@ -62,7 +58,6 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
         bar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-               ;
 
                 switch (item.getItemId()){
                     case R.id.survey:
@@ -119,12 +114,12 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
             // Setting Positive "Yes" Button
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    firebaseAuth.signOut();
+                    firebaseAuth.getInstance().signOut();
                     dialog.cancel();
                     finish();
 
-                    //opening profile activity
-                    startActivity(new Intent(DisplayActivity.this, MainActivity.class));
+                    Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(main);
 
                 }
             });
@@ -145,11 +140,10 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
 
     @Override
     public void onFragmentInteraction(String json, int num) {
-//        textViewName.setText("Please click on the recipe to display instructions:");
 
         DisplayFragment f = new DisplayFragment();
         Bundle args = new Bundle();
-        args.putSerializable("Json", json.toString());
+        args.putSerializable("Json", json);
         args.putSerializable("num", num);
         f.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager()
@@ -168,19 +162,6 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
         } catch (Exception e) {
 
         }
-    }
-
-    public android.support.v4.app.Fragment getVisibleFragment(){
-        FragmentManager fragmentManager = DisplayActivity.this.getSupportFragmentManager();
-        AtomicReference<List<Fragment>> fragments = new AtomicReference<List<Fragment>>();
-        fragments.set(fragmentManager.getFragments());
-        if(fragments.get() != null){
-            for(android.support.v4.app.Fragment fragment : fragments.get()){
-                if(fragment != null && fragment.isVisible())
-                    return fragment;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -206,7 +187,7 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
 
                 InputStream content = urlConnection.getInputStream();
                 BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
+                String s;
                 while ((s = buffer.readLine()) != null) {
                     response += s;
                 }

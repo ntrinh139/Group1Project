@@ -4,7 +4,7 @@
     <menu xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/barItems">
          <item android:id="@+id/home"
             android:title="Home"
-            android:icon="@drawable/ic_favorite" />
+            android:icon="@drawable/ic_home" />
         <item android:id="@+id/search"
             android:title="Search"
             android:icon="@drawable/ic_search" />
