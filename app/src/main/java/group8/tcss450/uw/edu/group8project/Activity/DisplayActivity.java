@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
@@ -25,17 +26,29 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import group8.tcss450.uw.edu.group8project.Fragments.DisplayFragment;
+import group8.tcss450.uw.edu.group8project.Fragments.FavoriteFragment;
+import group8.tcss450.uw.edu.group8project.Fragments.HomeFragment;
+import group8.tcss450.uw.edu.group8project.Fragments.SearchFragment;
+import group8.tcss450.uw.edu.group8project.Fragments.SurveyFragment;
+import group8.tcss450.uw.edu.group8project.R;
+
 /**
  * This class display user's email and the feature "search recipes"
  * after successfully signing in
  */
-public class DisplayActivity extends AppCompatActivity implements SurveyFragment.OnFragmentInteractionListener, DisplayFragment.OnFragmentInteractionListener2{
+public class DisplayActivity extends AppCompatActivity implements SurveyFragment.OnFragmentInteractionListener,
+                                    DisplayFragment.OnFragmentInteractionListener2,
+                                    SearchFragment.OnFragmentInteractionListener3,
+                                    FavoriteFragment.OnFragmentInteractionListener4 {
 
     private TextView textViewName;
     private SurveyFragment survay;
     private HomeFragment home;
+    private SearchFragment search;
+    private FavoriteFragment favorite;
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
+    private Firebase.AuthStateListener authStateListener;
 
 
     @Override
@@ -45,6 +58,9 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
 
         survay = new SurveyFragment();
         home = new HomeFragment();
+        search = new SearchFragment();
+        favorite = new FavoriteFragment();
+
         Bundle args = new Bundle();
         args.putSerializable("EMAIL", getIntent().getStringExtra("EMAIL"));
         home.setArguments(args);
@@ -82,10 +98,26 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
                         transaction2.commit();
                         break;
 
+                    case R.id.search:
+
+                        FragmentTransaction transaction3 = getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.DisplayActivity, search)
+                                .addToBackStack(null);
+                        transaction3.commit();
+                        break;
+
+                    case R.id.favorite:
+
+                        FragmentTransaction transaction4;
+                        transaction4 = getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.DisplayActivity, favorite)
+                                .addToBackStack(null);
+                        transaction4.commit();
+                        break;
+
                 }
-
-
-
 
                 return true;
             }
@@ -114,7 +146,7 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
             // Setting Positive "Yes" Button
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    firebaseAuth.getInstance().signOut();
+                    FirebaseAuth.getInstance().signOut();
                     dialog.cancel();
                     finish();
 
@@ -208,16 +240,9 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
                         .show();
                 return;
             }
-            DisplaySingleRecipe f = new DisplaySingleRecipe();
-            Bundle args = new Bundle();
-            args.putSerializable("recipeDetails", result);
-            f.setArguments(args);
-            FragmentTransaction transaction = getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.DisplayActivity, f)
-                    .addToBackStack(null);
-            // Commit the transaction
-            transaction.commit();
+
+            Intent intent = new Intent(DisplayActivity.this, SingleRecipeActivity .class);
+            startActivity(intent);
 
 
         }

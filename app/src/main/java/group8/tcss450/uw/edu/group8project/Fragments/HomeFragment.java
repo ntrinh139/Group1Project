@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import group8.tcss450.uw.edu.group8project.R;
 
 
 /**
@@ -41,7 +43,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (getArguments() != null) {
-            textViewName = (TextView) getActivity().findViewById(R.id.welcome);
+            textViewName = getActivity().findViewById(R.id.welcome);
             String nameFromIntent = getArguments().getString("EMAIL");
             textViewName.setText("Welcome " + nameFromIntent);
         }
@@ -61,11 +63,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-                    // handle back button's click listener
-                    return true;
-                }
-                return false;
+                return event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK;
             }
         });
     }

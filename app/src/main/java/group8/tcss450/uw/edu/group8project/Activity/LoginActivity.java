@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
+import group8.tcss450.uw.edu.group8project.R;
+
 /**
  * LoginActivity class display log in layout
  * where user input there email and password
@@ -24,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
  * It failed -> staying on login layout
  *    passed -> go to DisplayActivty
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GetWebServiceTaskDelegate {
 
     private final AppCompatActivity activity = LoginActivity.this;
 

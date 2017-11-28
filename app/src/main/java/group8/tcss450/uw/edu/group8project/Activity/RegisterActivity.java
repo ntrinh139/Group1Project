@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
+import group8.tcss450.uw.edu.group8project.R;
 
 /**
  * RegisterActivity class display sign up layout

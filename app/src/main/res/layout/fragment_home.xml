@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group8.tcss450.uw.edu.group8project.HomeFragment">
+    tools:context="group8.tcss450.uw.edu.group8project.Fragments.HomeFragment">
 
     <TextView
         android:id="@+id/welcome"

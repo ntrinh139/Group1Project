@@ -1,10 +1,12 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import group8.tcss450.uw.edu.group8project.R;
 
 /**
  * This activity is appeared at beggining

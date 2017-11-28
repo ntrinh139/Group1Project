@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import group8.tcss450.uw.edu.group8project.R;
 
 
 /**
@@ -190,7 +192,6 @@ public class SurveyFragment extends Fragment {
                 mListener.onFragmentInteraction(result, numOfRecipes);
             }
 
-
         }
     }
 
@@ -208,11 +209,7 @@ public class SurveyFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-                    // handle back button's click listener
-                    return true;
-                }
-                return false;
+                return event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK;
             }
         });
     }

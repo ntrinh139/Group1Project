@@ -1,4 +1,4 @@
-package group8.tcss450.uw.edu.group8project;
+package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.app.Activity;
 import android.content.Context;

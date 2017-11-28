@@ -1,22 +1,17 @@
-package group8.tcss450.uw.edu.group8project;
-
+package group8.tcss450.uw.edu.group8project.Fragments;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.net.URL;
+import group8.tcss450.uw.edu.group8project.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,6 +117,4 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction2(JSONObject jsonObject, int recipeIndex);
     }
-
-
 }

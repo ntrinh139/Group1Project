@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/DisplayActivity"
-    tools:context="group8.tcss450.uw.edu.group8project.DisplayActivity"
+    tools:context="group8.tcss450.uw.edu.group8project.Activity.DisplayActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
