@@ -22,13 +22,13 @@
         android:id="@+id/vIngredients" />
 
     <Button
-        android:text="Save to favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:text="Save to Favorite"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/Savebutton" />
+        android:id="@+id/Savebutton"/>
 
     <TextView
         android:text="TextView"

@@ -36,6 +36,4 @@
         android:contentDescription=""
         android:layout_marginEnd="8dp"
         tools:ignore="ContentDescription" />
-
-
 </android.support.constraint.ConstraintLayout>

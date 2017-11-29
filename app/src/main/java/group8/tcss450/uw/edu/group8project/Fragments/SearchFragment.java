@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 
 import group8.tcss450.uw.edu.group8project.Activity.AllRecipesActivity;
 import group8.tcss450.uw.edu.group8project.R;
@@ -20,7 +21,7 @@ import group8.tcss450.uw.edu.group8project.R;
  * {@link SearchFragment.OnFragmentInteractionListener3} interface
  * to handle interaction events.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     protected OnFragmentInteractionListener3 mListener;
 
@@ -66,6 +67,15 @@ public class SearchFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 
 
     /**
