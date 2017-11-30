@@ -2,6 +2,8 @@
     <string name="app_name">FoodRecipes</string>
     <string name="display">WELCOME</string>
     <string name="nextTextView">CLICK TO CONTINUE</string>
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
 
     <string name="hint_email">Email (example@haha.hehe)</string>
     <string name="hint_password">Password (at least 6 characters)</string>

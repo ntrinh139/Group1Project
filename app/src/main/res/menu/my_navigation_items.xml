@@ -2,17 +2,22 @@
 
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/barItems">
          <item android:id="@+id/home"
             android:title="Home"
-            android:icon="@drawable/ic_home" />
+            android:icon="@drawable/ic_home"
+             tools:ignore="HardcodedText" />
         <item android:id="@+id/search"
             android:title="Search"
-            android:icon="@drawable/ic_search" />
+            android:icon="@drawable/ic_search"
+            tools:ignore="HardcodedText" />
         <item android:id="@+id/survey"
             android:title="survey"
-            android:icon="@drawable/ic_survey" />
+            android:icon="@drawable/ic_survey"
+            tools:ignore="HardcodedText" />
         <item android:id="@+id/favorite"
             android:title="Favorites"
-            android:icon="@drawable/ic_favorite" />
+            android:icon="@drawable/ic_favorite"
+            tools:ignore="HardcodedText" />
     </menu>

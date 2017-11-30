@@ -29,7 +29,7 @@
         android:src="@drawable/group8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:ignore="MissingConstraints"
+        tools:ignore="ContentDescription,MissingConstraints"
         app:layout_constraintBottom_toTopOf="@+id/next"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 

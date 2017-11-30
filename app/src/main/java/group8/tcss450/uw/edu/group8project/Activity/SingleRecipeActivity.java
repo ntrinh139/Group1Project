@@ -222,5 +222,4 @@ public class SingleRecipeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }
