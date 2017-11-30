@@ -4,7 +4,7 @@
     <string name="nextTextView">CLICK TO CONTINUE</string>
 
     <string name="hint_email">Email (example@haha.hehe)</string>
-    <string name="hint_password">Password (6 characters-upper,lower,special character,number)</string>
+    <string name="hint_password">Password (at least 6 characters)</string>
     <string name="hint_confirm_password">Confirm Password</string>
 
     <string name="text_login">LOG IN</string>
@@ -18,8 +18,6 @@
     <string name="error_email_exists">Email Already Exists</string>
     <string name="error_password_match">Passwords Do Not Match</string>
     <string name="error_valid_email_password">Wrong Email or Password</string>
-    <string name="error_validPassword2">Password must include 1 lowercase, 1 uppercase, 1 special character
-                                        and 1 number </string>
     <string name="error_validPassword1">Password must contain at least 6 characters </string>
 
     <string name="login_error">Wrong Email or Password.</string>

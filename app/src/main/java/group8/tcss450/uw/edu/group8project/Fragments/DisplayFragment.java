@@ -114,7 +114,6 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener2 {
-        // TODO: Update argument type and name
         void onFragmentInteraction2(JSONObject jsonObject, int recipeIndex);
     }
 }

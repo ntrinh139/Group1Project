@@ -134,10 +134,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
 
+
         //check if password is valid (at least 6 characters
         // including 1 lower, 1 upper, 1 special character and 1 number.
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
-                getString(R.string.error_validPassword1), getString(R.string.error_validPassword2))) {
+                getString(R.string.error_validPassword1))) {
             edittextPassword.requestFocus();
             return false;
         }
@@ -148,12 +149,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
 
+
         //check if password and confirm password are matched
         if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
                 layoutConfirmPassword, getString(R.string.error_password_match))) {
             edittextConfirmPassword.requestFocus();
             return false;
         }
+
 
         return true;
     }

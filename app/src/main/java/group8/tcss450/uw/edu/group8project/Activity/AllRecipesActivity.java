@@ -31,7 +31,8 @@ import group8.tcss450.uw.edu.group8project.R;
 public class AllRecipesActivity extends AppCompatActivity {
 
     String products;
-    String id;
+    int id;
+    JSONArray object;
 
     private List<String> recipeArray = new ArrayList<String>();
     private ListView recipes;
@@ -62,8 +63,15 @@ public class AllRecipesActivity extends AppCompatActivity {
         recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                System.out.println(recipes.getItemAtPosition(position));
-                System.out.println(id);
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    id = Integer.parseInt(jsonObject.getJSONArray("results").getJSONObject(position).getString("id"));
+                    AsyncTask<String, String, String> task = new AllRecipesActivity.FoodAPI();
+                    task.execute("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions?stepBreakdown=false");
+                } catch (Exception e) {
+
+                }
 
                 Intent intent = new Intent(AllRecipesActivity.this, SingleRecipeActivity.class);
                 intent.putExtra("detailID", id);
@@ -81,7 +89,7 @@ public class AllRecipesActivity extends AppCompatActivity {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject result = (JSONObject) array.get(i);
                     recipeArray.add(result.getString("title"));
-                    id = result.getString("id");
+                    id = result.getInt("id");
                     arrayAdapter.notifyDataSetChanged();
                 }
             } else {
@@ -173,7 +181,6 @@ public class AllRecipesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            System.out.println(object);
             AllRecipesActivity.this.reloadList(object);
         }
     }

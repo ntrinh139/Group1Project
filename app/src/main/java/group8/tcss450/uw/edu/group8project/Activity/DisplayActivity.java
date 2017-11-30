@@ -138,10 +138,10 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DisplayActivity.this);
 
             // Setting Dialog Title
-            alertDialog.setTitle("Confirm Exit...");
+            alertDialog.setTitle("Confirm Exit");
 
             // Setting Dialog Message
-            alertDialog.setMessage("Are you sure you want to EXIT ?");
+            alertDialog.setMessage("Are you sure you want to LOG OUT?");
 
             // Setting Positive "Yes" Button
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -247,5 +247,6 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
 
         }
     }
+
 
 }

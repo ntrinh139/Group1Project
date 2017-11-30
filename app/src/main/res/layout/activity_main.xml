@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     android:id="@+id/container"
     tools:context="group8.tcss450.uw.edu.group8project.Activity.MainActivity">
 
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="45sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         android:textColor="@color/red"
         app:layout_constraintRight_toRightOf="parent"
@@ -34,11 +35,14 @@
 
     <TextView
         android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
         android:text="@string/nextTextView"
-        android:textColor="@color/blue"
+        android:gravity="center"
         android:textStyle="bold"
+        android:background="#FFFFFF"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

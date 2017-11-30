@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edittextPassword.requestFocus();
             return false;
         }
+
         return true;
     }
 

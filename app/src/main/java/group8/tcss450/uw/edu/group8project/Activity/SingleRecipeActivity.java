@@ -162,7 +162,6 @@ public class SingleRecipeActivity extends AppCompatActivity {
             }
             else if (type.equals("ingredients")) {
                 SingleRecipeActivity.this.getIngredients(result);
-                SingleRecipeActivity.this.getURL(result);
             }
             else if (type.equals("instructions")) {
                 SingleRecipeActivity.this.processInstructions(result);
@@ -220,16 +219,6 @@ public class SingleRecipeActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
             arrayList.add("No ingredients found");
-            e.printStackTrace();
-        }
-    }
-
-    private void getURL(String result) {
-        try {
-            JSONObject object = new JSONObject(result);
-            sourceUrl = object.getString("sourceUrl");
-
-        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

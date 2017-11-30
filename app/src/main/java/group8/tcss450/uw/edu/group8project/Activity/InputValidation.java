@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static android.util.Patterns.EMAIL_ADDRESS;
 
 /**
@@ -82,40 +79,16 @@ public class InputValidation {
      * 1 speical character and 1 number)
      * Display error message
      */
-    public boolean isPasswordValid(TextInputEditText userEditText, TextInputLayout layoutEditText, String message1, String message2) {
+    public boolean isPasswordValid(TextInputEditText userEditText, TextInputLayout layoutEditText, String message1) {
         String password = userEditText.getText().toString().trim();
 
-        Pattern pattern;
-        Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&!+=])(?=\\S+$).{4,}$";
-
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-
-        boolean value = matcher.matches();
-
-        if (password.length() > 5) {
-            if (value == false) {
-                layoutEditText.setError(message2);
-                hideKeyboardFrom(userEditText);
-                return false;
-            } else {
-                hideKeyboardFrom(userEditText);
-                layoutEditText.setErrorEnabled(false);
-            }
-            return true;
-        } else {
-            if (value == false) {
-                layoutEditText.setError(message1 +"\n" + message2);
-                hideKeyboardFrom(userEditText);
-                return false;
-            } else {
+        if (password.length() < 5) {
                 layoutEditText.setErrorEnabled(false);
                 hideKeyboardFrom(userEditText);
             }
-            hideKeyboardFrom(userEditText);
-            layoutEditText.setError(message1);
-        }
+        hideKeyboardFrom(userEditText);
+        layoutEditText.setError(message1);
+
         return true;
     }
 

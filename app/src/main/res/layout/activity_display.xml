@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/DisplayActivity"
+    android:theme="@style/AppTheme"
     tools:context="group8.tcss450.uw.edu.group8project.Activity.DisplayActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
@@ -16,6 +17,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/navigation"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/blue"
+        app:itemTextColor="@color/red"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

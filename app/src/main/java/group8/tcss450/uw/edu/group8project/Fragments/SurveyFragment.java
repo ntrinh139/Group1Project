@@ -94,15 +94,6 @@ public class SurveyFragment extends Fragment {
                     try {
                         numOfRecipes = Integer.parseInt(tv5.getText().toString());
                         sb.append("&offset=0");
-
-                        TextView tv6 = getActivity().findViewById(R.id.editTextQuery);
-                        if (!tv6.getText().toString().isEmpty()) {
-                            sb.append("&query="+tv6.getText().toString());
-                        }
-
-                        sb.append("&ranking=1");
-
-
                         task.execute(sb.toString().replaceAll(" ", ""));
                     } catch (Exception e) {
                         tv5.setError("Number of Recipes have to be numeric");
@@ -145,7 +136,6 @@ public class SurveyFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(String json, int num);
     }
 
