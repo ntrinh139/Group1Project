@@ -1,14 +1,19 @@
 package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,11 +44,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private AppCompatButton logIN;
     private AppCompatTextView signUP;
+    private CheckBox rememberMeCheckBox;
 
     private InputValidation inputValidation;
     private FirebaseAuth mAuth;
     private String email;
     private String password;
+    private SharedPreferences settings;
 
     /*
      * Initialize activity.
@@ -63,6 +70,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         logIN = (AppCompatButton) findViewById(R.id.logIN);
         signUP = (AppCompatTextView) findViewById(R.id.signUP);
+        rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMe);
+
 
         //initialize listeners
         logIN.setOnClickListener(this);
@@ -71,6 +80,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //initialize objects
         inputValidation = new InputValidation(activity);
         mAuth = FirebaseAuth.getInstance();
+        settings = getSharedPreferences("FoodRecipes", MODE_PRIVATE);
+        String currentUserEmail = settings.getString("email", null);
+        if (currentUserEmail != null) {
+            edittextEmail.setText(currentUserEmail);
+        }
     }
 
     /*
@@ -101,6 +115,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
                                             emailVerification();
                                         } else {
+                                            if (rememberMeCheckBox.isChecked()) {
+                                                SharedPreferences.Editor editor = settings.edit();
+                                                editor.putString("email", edittextEmail.getText().toString().trim());
+                                                editor.putBoolean("isLoggedIn", true);
+                                                // Commit the edits!
+                                                editor.commit();
+                                            }
                                             Intent accountsIntent = new Intent(activity, DisplayActivity.class);
                                             accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
                                             startActivity(accountsIntent);
@@ -149,26 +170,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * This method checks if the validation of input
      */
     private boolean areInputsValid(){
+        boolean mybool = true;
+
+
+        //check if password field is filled.
+        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            edittextPassword.requestFocus();
+            mybool = false;
+        }
 
         //check if email field is filled.
         if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
             edittextEmail.requestFocus();
-            return false;
+            mybool = false;
         }
 
         //check if email is in valid format (example@hehe.haha)
         if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
             edittextEmail.requestFocus();
-            return false;
+            mybool = false;
         }
 
-        //check if password field is filled.
-        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
-            edittextPassword.requestFocus();
-            return false;
-        }
 
-        return true;
+        return mybool;
     }
 
     @Override

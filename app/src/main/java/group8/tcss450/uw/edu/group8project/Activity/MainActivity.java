@@ -1,6 +1,7 @@
 package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,8 +27,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                SharedPreferences settings = getSharedPreferences("FoodRecipes", MODE_PRIVATE);
+                String currentUserEmail = settings.getString("email", null);
+                boolean isLoggedIn = settings.getBoolean("isLoggedIn", false);
+                if (currentUserEmail != null && isLoggedIn) {
+                    Intent accountsIntent = new Intent(MainActivity.this, DisplayActivity.class);
+                    accountsIntent.putExtra("EMAIL",currentUserEmail);
+                    startActivity(accountsIntent);
+                } else {
                     Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loginIntent);
+                }
+
             }
         });
     }

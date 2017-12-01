@@ -116,50 +116,48 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private boolean areInputsValid(){
-
-        //check if email field is filled
-        if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
-            edittextEmail.requestFocus();
-            return false;
+        boolean mybool = true;
+        //check if password and confirm password are matched
+        if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
+                layoutConfirmPassword, getString(R.string.error_password_match))) {
+            edittextConfirmPassword.requestFocus();
+            mybool = false;
         }
 
-        //check if email is in valid format (example@hehe.haha)
-        if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
-            edittextEmail.requestFocus();
-            return false;
+        //check if the confirm password is filled
+        if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
+            edittextConfirmPassword.requestFocus();
+            mybool = false;
         }
-
-        //check if password field is filled
-        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
-            edittextPassword.requestFocus();
-            return false;
-        }
-
 
         //check if password is valid (at least 6 characters
         // including 1 lower, 1 upper, 1 special character and 1 number.
         if (!inputValidation.isPasswordValid(edittextPassword, layoutPassword,
                 getString(R.string.error_validPassword1))) {
             edittextPassword.requestFocus();
-            return false;
+            mybool = false;
         }
 
-        //check if the confirm password is filled
-        if (!inputValidation.isTextEditFilled(edittextConfirmPassword, layoutConfirmPassword, getString(R.string.error_empty_confirmPassword))) {
-            edittextConfirmPassword.requestFocus();
-            return false;
+        //check if password field is filled
+        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+            edittextPassword.requestFocus();
+            mybool = false;
+        }
+
+        //check if email is in valid format (example@hehe.haha)
+        if (!inputValidation.isEmailValid(edittextEmail, layoutEmail, getString(R.string.error_message_email))) {
+            edittextEmail.requestFocus();
+            mybool = false;
+        }
+
+        //check if email field is filled
+        if (!inputValidation.isTextEditFilled(edittextEmail, layoutEmail, getString(R.string.error_empty_email))) {
+            edittextEmail.requestFocus();
+            mybool = false;
         }
 
 
-        //check if password and confirm password are matched
-        if (!inputValidation.isPasswordMatched(edittextPassword, edittextConfirmPassword,
-                layoutConfirmPassword, getString(R.string.error_password_match))) {
-            edittextConfirmPassword.requestFocus();
-            return false;
-        }
-
-
-        return true;
+        return mybool;
     }
 
     /*
