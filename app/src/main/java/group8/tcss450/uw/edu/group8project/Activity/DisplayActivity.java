@@ -2,6 +2,7 @@ package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -146,6 +147,11 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
             // Setting Positive "Yes" Button
             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences settings = getSharedPreferences("FoodRecipes", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("isLoggedIn", false);
+                    editor.commit();
+
                     FirebaseAuth.getInstance().signOut();
                     dialog.cancel();
                     finish();

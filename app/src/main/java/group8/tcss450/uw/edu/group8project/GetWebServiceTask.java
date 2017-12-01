@@ -1,6 +1,7 @@
 package group8.tcss450.uw.edu.group8project;
 
 import android.os.AsyncTask;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -44,7 +45,7 @@ public class GetWebServiceTask extends AsyncTask<String, Void, Integer> {
         if(result < 300) {
             delegate.handleSuccess();
         } else {
-            delegate.handleFailure("Error");
+            delegate.handleFailure();
         }
     }
 }

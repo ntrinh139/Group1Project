@@ -83,11 +83,10 @@ public class InputValidation {
         String password = userEditText.getText().toString().trim();
 
         if (password.length() < 5) {
-                layoutEditText.setErrorEnabled(false);
-                hideKeyboardFrom(userEditText);
-            }
+            layoutEditText.setError(message1);
+            hideKeyboardFrom(userEditText);
+        }
         hideKeyboardFrom(userEditText);
-        layoutEditText.setError(message1);
 
         return true;
     }
