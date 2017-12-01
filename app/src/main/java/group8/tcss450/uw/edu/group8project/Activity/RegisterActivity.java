@@ -88,25 +88,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.signUP:
                 if (!areInputsValid()) {
                     break;
-                }
+                } else {
 
-                final String email = edittextEmail.getText().toString().trim();
-                final String password = edittextPassword.getText().toString();
+                    final String email = edittextEmail.getText().toString().trim();
+                    final String password = edittextPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
-                                if (!task.isSuccessful()) {
-                                    handleFailure("");
-                                } else {
-                                    handleSuccess();
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                                    if (!task.isSuccessful()) {
+                                        handleFailure();
+                                    } else {
+                                        handleSuccess();
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                break;
+                    break;
+                }
             case R.id.logIN:
                 Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intentLogin);
@@ -202,8 +203,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void handleFailure(String errorMessage) {
-        Toast.makeText(activity, "Authetication failed",
+    public void handleFailure() {
+        Toast.makeText(activity, "Authentication failed",
                 Toast.LENGTH_SHORT).show();
     }
 }

@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
 import group8.tcss450.uw.edu.group8project.R;
@@ -83,29 +84,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.logIN:
                 if (!areInputsValid()) {
                     break;
-                }
-                email = edittextEmail.getText().toString().trim();
-                password = edittextPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // [START_EXCLUDE]
+                } else {
+                    email = edittextEmail.getText().toString().trim();
+                    password = edittextPassword.getText().toString();
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    // [START_EXCLUDE]
 
-                                if (!task.isSuccessful()) {
-                                    handleFailure("");
+                                    if (!task.isSuccessful()) {
+                                        handleFailure();
 
-                                } else {
-                                    if (!mAuth.getCurrentUser().isEmailVerified()) {
-                                        Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
                                     } else {
-                                        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-                                        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-                                        startActivity(accountsIntent);
+                                        if (!mAuth.getCurrentUser().isEmailVerified()) {
+                                            Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
+                                            emailVerification();
+                                        } else {
+                                            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+                                            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+                                            startActivity(accountsIntent);
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                }
                 break;
 
             case R.id.signUP:
@@ -113,6 +116,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intentRegister);
                 break;
         }
+    }
+
+    /*
+     * The method will send user an email verification
+     * after checking email and password authentication
+     * Users need to verify their email before logging in
+     */
+    private void emailVerification() {
+        // Send verification email
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this,
+                                    "Verification email sent to " + user.getEmail()
+                                            + "\nPlease verify your email before logging in",
+                                    Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /*
@@ -153,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void handleFailure(String errorMessage) {
+    public void handleFailure() {
         Toast.makeText(activity, "Sign In failed, please try again.",
                 Toast.LENGTH_SHORT).show();
         return;
