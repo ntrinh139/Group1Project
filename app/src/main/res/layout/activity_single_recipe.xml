@@ -1,84 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_detail"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    tools:context="group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity">
+    android:fillViewport="true">
 
-    <TextView
-        android:text="TextView"
-        android:background="#FFFFFF"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_detail"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:id="@+id/vTitle"
-        android:textColor="@color/red"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="Ingredients"
-        android:background="#FFFFFF"
-        android:layout_width="match_parent"
-        android:id="@+id/iii"
-        android:layout_below="@+id/vTitle"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/iii"
-        android:layout_height="150dp"
-        android:id="@+id/vIngredients" />
-
-    <TextView
+        android:layout_height="match_parent"
         android:paddingTop="20dp"
-        android:id="@+id/vInstructions"
-        android:background="#FFFFFF"
-        android:layout_width="match_parent"
-        android:layout_height="265dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/vIngredients"
-        android:autoLink="web"
-        android:scrollbars="vertical"
-        android:text="Instruction"
-        android:textStyle="bold"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
-        android:layout_above="@+id/Savebutton" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        tools:context="group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity">
 
-    <Button
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:drawableLeft="@drawable/ic_favorite"
-        android:drawableTint="@color/red"
-        android:tint="@color/red"
-        android:drawablePadding="6dp"
-        android:gravity="center"
-        android:background="#FFFFFF"
-        android:textColor="@color/red"
-        android:height="60dp"
-        android:id="@+id/Savebutton"
-        android:text="Click To Save"
-        android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription=""
-        tools:ignore="ContentDescription"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/vTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="Ingrediants And Instructions"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/ic_favorite"
+            android:drawableTint="@color/red"
+            android:tint="@color/red"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:textColor="@color/red"
+            android:height="60dp"
+            android:id="@+id/Savebutton"
+            android:text="Click To Save"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription=""
+            tools:ignore="ContentDescription"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+        <TextView
+            android:id="@+id/ingredinatsPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vTitle"
+         />
+
+
+
+
+            <TextView
+                android:id="@+id/vIngredinats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ingredinatsPrompt"/>
+
+
+
+        <TextView
+            android:id="@+id/instructionsPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vIngredinats"
+            />
+
+
+
+
+
+
+
+
+            <TextView
+                android:id="@+id/vInstructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instructionsPrompt"/>
+
+
+
+
+
+    </RelativeLayout>
+
+</ScrollView>

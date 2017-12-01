@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,9 @@ public class AllRecipesActivity extends AppCompatActivity {
     int id;
     JSONArray object;
 
+    boolean allRecipes;
+    JSONArray recipesJsonArray;
+
     private List<String> recipeArray = new ArrayList<String>();
     private ListView recipes;
     private ArrayAdapter arrayAdapter;
@@ -41,6 +45,7 @@ public class AllRecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_all_recipes);
 
         Bundle bundle = getIntent().getExtras();
@@ -54,6 +59,7 @@ public class AllRecipesActivity extends AppCompatActivity {
         recipes.setAdapter(arrayAdapter);
 
         try {
+            allRecipes = true;
             new FoodAPI().execute("/recipes/findByIngredients?number=100&ingredients=" + URLEncoder.encode(products, "UTF-8"));
 
         } catch (UnsupportedEncodingException e) {
@@ -64,18 +70,22 @@ public class AllRecipesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                JSONObject jsonObject = new JSONObject();
+//                JSONObject jsonObject = new JSONObject();
                 try {
-                    id = Integer.parseInt(jsonObject.getJSONArray("results").getJSONObject(position).getString("id"));
+//                    id = Integer.parseInt(jsonObject.getJSONArray("results").getJSONObject(position).getString("id"));
                     AsyncTask<String, String, String> task = new AllRecipesActivity.FoodAPI();
-                    task.execute("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions?stepBreakdown=false");
+                    Log.d("TAG", "baller");
+                    allRecipes = false;
+
+                    JSONObject result = (JSONObject) recipesJsonArray.get(position);
+                    id = result.getInt("id");
+                    Log.d("TAG", id+"");
+                    task.execute("/recipes/"+id+"/analyzedInstructions?stepBreakdown=false");
                 } catch (Exception e) {
 
                 }
 
-                Intent intent = new Intent(AllRecipesActivity.this, SingleRecipeActivity.class);
-                intent.putExtra("detailID", id);
-                startActivity(intent);
+
             }
         });
 
@@ -89,7 +99,7 @@ public class AllRecipesActivity extends AppCompatActivity {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject result = (JSONObject) array.get(i);
                     recipeArray.add(result.getString("title"));
-                    id = result.getInt("id");
+                    //id = result.getInt("id");
                     arrayAdapter.notifyDataSetChanged();
                 }
             } else {
@@ -110,7 +120,7 @@ public class AllRecipesActivity extends AppCompatActivity {
             BufferedReader reader = null;
 
             try {
-
+Log.d("Tag", params[0]);
                 URL url = new URL("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com" + params[0]);
                 connection = (HttpURLConnection) url.openConnection();
 
@@ -174,14 +184,25 @@ public class AllRecipesActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            JSONArray object = null;
-            try {
-                object = new JSONArray(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (allRecipes) {
+                try {
+                    recipesJsonArray = new JSONArray(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                AllRecipesActivity.this.reloadList(recipesJsonArray);
+            } else {
+
+
+                Log.d("TAG2", result);
+                Intent intent = new Intent(AllRecipesActivity.this, SingleRecipeActivity.class);
+                intent.putExtra("json", result);
+                intent.putExtra("id", id);
+                startActivity(intent);
             }
 
-            AllRecipesActivity.this.reloadList(object);
+
         }
     }
 }
