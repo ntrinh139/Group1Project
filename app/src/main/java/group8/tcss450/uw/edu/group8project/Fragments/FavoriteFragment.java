@@ -85,8 +85,8 @@ public class FavoriteFragment extends Fragment {
                 System.out.println("Failed to read value." + databaseError.toException());
             }
         });
-        return v;
 
+        return v;
     }
 
     void reloadList(JSONObject object) {
@@ -120,7 +120,7 @@ public class FavoriteFragment extends Fragment {
                 URL url = new URL("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com" + params[0]);
                 connection = (HttpURLConnection) url.openConnection();
 
-                connection.setRequestProperty("X-Mashape-Key","V0va8PPFQMmshrhuRsVxtq8RDzR9p1saIT5jsnuzvhjsSxaZRl");
+                connection.setRequestProperty("X-Mashape-Key", "V0va8PPFQMmshrhuRsVxtq8RDzR9p1saIT5jsnuzvhjsSxaZRl");
                 connection.setRequestProperty("Accept", "application/json");
 
                 try {
@@ -189,6 +189,7 @@ public class FavoriteFragment extends Fragment {
             FavoriteFragment.this.reloadList(object);
         }
     }
+
 
     @Override
     public void onResume() {
