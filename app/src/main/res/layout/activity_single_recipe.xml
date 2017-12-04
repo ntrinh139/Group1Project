@@ -1,100 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_single_recipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    tools:context="group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <TextView
+        android:id="@+id/vTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.design.widget.BottomNavigationView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        tools:context="group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity">
+        android:id="@+id/navigation"
+        android:background="#FFFFFF"
+        app:itemIconTint="@color/blue"
+        app:itemTextColor="@color/red"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/my_navigation_items"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
-        <TextView
-            android:id="@+id/vTitle"
+    <Button
+        android:id="@+id/Savebutton"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:height="60dp"
+        android:background="#FFFFFF"
+        android:contentDescription=""
+        android:drawableLeft="@drawable/ic_favorite"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/red"
+        android:gravity="center"
+        android:text="Click To Save"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:tint="@color/red"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="ContentDescription"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/hehe" />
+
+    <ScrollView
+        android:id="@+id/hehe"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="115dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/vTitle"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/activity_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:text="Ingrediants And Instructions"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            tools:context="group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity">
 
-        <Button
-            android:layout_width="160dp"
-            android:layout_height="50dp"
-            android:drawableLeft="@drawable/ic_favorite"
-            android:drawableTint="@color/red"
-            android:tint="@color/red"
-            android:drawablePadding="6dp"
-            android:gravity="center"
-            android:background="#FFFFFF"
-            android:textColor="@color/red"
-            android:height="60dp"
-            android:id="@+id/Savebutton"
-            android:text="Click To Save"
-            android:textStyle="bold"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription=""
-            tools:ignore="ContentDescription"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-
-        <TextView
-            android:id="@+id/ingredinatsPrompt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/vTitle"
-         />
-
-
-
+            <TextView
+                android:id="@+id/ingredinatsPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Ingredients"
+                android:textColor="@color/blue"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/vIngredinats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ingredinatsPrompt"/>
+                android:layout_below="@+id/ingredinatsPrompt"
+                android:background="#FFFFFF"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
 
-
-
-        <TextView
-            android:id="@+id/instructionsPrompt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/vIngredinats"
-            />
-
-
-
-
-
-
-
+            <TextView
+                android:id="@+id/instructionsPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vIngredinats"
+                android:background="#FFFFFF"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Instruction"
+                android:textColor="@color/blue"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/vInstructions"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/instructionsPrompt"/>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/instructionsPrompt"
+                android:background="#FFFFFF"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
+        </RelativeLayout>
 
+    </ScrollView>
 
-
-
-    </RelativeLayout>
-
-</ScrollView>
+</android.support.constraint.ConstraintLayout>
