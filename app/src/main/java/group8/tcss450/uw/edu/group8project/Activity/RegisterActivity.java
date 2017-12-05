@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import group8.tcss450.uw.edu.group8project.GetWebServiceTask;
 import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
 import group8.tcss450.uw.edu.group8project.R;
 
@@ -44,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private InputValidation inputValidation;
 
-    private FirebaseAuth mAuth;
 
 
     /*
@@ -74,7 +74,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //initialize objects
         inputValidation = new InputValidation(activity);
-        mAuth = FirebaseAuth.getInstance();
     }
 
     /*
@@ -89,22 +88,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (!areInputsValid()) {
                     break;
                 } else {
-
                     final String email = edittextEmail.getText().toString().trim();
                     final String password = edittextPassword.getText().toString();
+                    final GetWebServiceTask registerTask = new GetWebServiceTask();
+                    registerTask.delegate = this;
+                    registerTask.execute("http://cssgate.insttech.washington.edu/~davidmk/register.php", email, password);
 
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d("TAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
-                                    if (!task.isSuccessful()) {
-                                        handleFailure();
-                                    } else {
-                                        handleSuccess();
-                                    }
-                                }
-                            });
 
                     break;
                 }
@@ -166,26 +155,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * Users need to verify their email before logging in
      */
     private void emailVerification() {
-        // Send verification email
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this,
-                                    "Verification email sent to " + user.getEmail()
-                                    + "\nPlease verify your email before logging in",
-                                    Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Log.e("TAG", "sendEmailVerification", task.getException());
-                            Toast.makeText(RegisterActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
+//        Toast.makeText(RegisterActivity.this,
+//                "Verification email sent to " + user.getEmail()
+//                        + "\nPlease verify your email before logging in",
+//                Toast.LENGTH_SHORT).show();
+//
+//
+//        Log.e("TAG", "sendEmailVerification", task.getException());
+//        Toast.makeText(RegisterActivity.this,
+//                "Failed to send verification email.",
+//                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -195,14 +176,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void handleSuccess() {
-        Toast.makeText(activity, "Authetication success. \nNow verify your email",
+        Toast.makeText(activity, "Registration success. \nPlease verify your email",
                 Toast.LENGTH_SHORT).show();
         emailVerification();
     }
 
     @Override
-    public void handleFailure() {
-        Toast.makeText(activity, "Authentication failed",
+    public void handleFailure(int theInt) {
+        Toast.makeText(activity, "Registration failed",
                 Toast.LENGTH_SHORT).show();
     }
 }

@@ -140,7 +140,7 @@ public class SurveyFragment extends Fragment {
     }
 
     private class TestWebServiceTask extends AsyncTask<String, Void, String> {
-        private final String SERVICE = null;
+
         @Override
         protected String doInBackground(String... strings) {
             String response = "";

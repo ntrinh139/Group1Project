@@ -33,7 +33,6 @@ public class AllRecipesActivity extends AppCompatActivity {
 
     String products;
     int id;
-    JSONArray object;
 
     boolean allRecipes;
     JSONArray recipesJsonArray;
@@ -120,7 +119,6 @@ public class AllRecipesActivity extends AppCompatActivity {
             BufferedReader reader = null;
 
             try {
-Log.d("Tag", params[0]);
                 URL url = new URL("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com" + params[0]);
                 connection = (HttpURLConnection) url.openConnection();
 

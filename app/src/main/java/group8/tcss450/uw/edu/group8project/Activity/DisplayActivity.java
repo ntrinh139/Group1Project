@@ -266,7 +266,6 @@ public class DisplayActivity extends AppCompatActivity implements
 
             Intent intent = new Intent(DisplayActivity.this, SingleRecipeActivity .class);
             intent.putExtra("json", result);
-            //intent.putExtra("id", );
             startActivity(intent);
 
 

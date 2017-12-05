@@ -24,9 +24,6 @@
             android:id="@+id/list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="SURVEY"
             android:textColor="@color/red"
@@ -35,8 +32,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             tools:ignore="HardcodedText"
             app:layout_constraintHorizontal_bias="0.36" />
 
@@ -45,8 +40,6 @@
             android:background="#FFFFFF"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:text="@string/SearchKey"
             android:gravity="center"
             android:textColor="@color/red"
@@ -55,32 +48,27 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
 
         <TextView
             android:id="@+id/textView2"
             android:background="#FFFFFF"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="60dp"
             android:text="@string/CusineKey"
             android:paddingTop="5dp"
             android:textColor="@color/blue"
             android:textSize="15sp"
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:background="#FFFFFF"
             android:id="@+id/editTextCuisine"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="3dp"
             android:ems="10"
             android:hint="@string/PromptA"
@@ -88,15 +76,13 @@
             android:gravity="center"
             android:inputType="textPersonName"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <EditText
             android:background="#FFFFFF"
             android:id="@+id/editTextDiet"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:textStyle="bold"
             android:layout_marginTop="3dp"
             android:ems="10"
@@ -104,39 +90,33 @@
             android:gravity="center"
             android:inputType="textPersonName"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:background="#FFFFFF"
             android:id="@+id/textView3"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/DietKey"
-            android:paddingTop="5dp"
             android:textColor="@color/blue"
             android:textSize="15sp"
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCuisine"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextCuisine" />
 
         <TextView
             android:background="#FFFFFF"
             android:id="@+id/textView4"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/EEKey"
             android:gravity="center"
             android:textColor="@color/blue"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDiet"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextDiet" />
 
         <EditText
             android:background="#FFFFFF"
@@ -150,32 +130,26 @@
             android:textStyle="bold"
             android:inputType="textPersonName"
             app:layout_constraintTop_toBottomOf="@+id/textView4"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:background="#FFFFFF"
             android:id="@+id/textView5"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:paddingTop="5dp"
             android:text="@string/IEKey"
             android:textColor="@color/blue"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextExcludeIngredients"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextExcludeIngredients" />
 
         <EditText
             android:background="#FFFFFF"
             android:id="@+id/editTextIncludeIngredients"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="3dp"
             android:ems="10"
             android:textStyle="bold"
@@ -183,15 +157,13 @@
             android:gravity="center"
             android:inputType="textPersonName"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <EditText
             android:background="#FFFFFF"
             android:id="@+id/editTextNumber"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="3dp"
             android:ems="10"
             android:hint="@string/PromptB"
@@ -200,24 +172,20 @@
             android:inputType="textPersonName"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
-            android:layout_marginStart="8dp"
             tools:ignore="TextFields" />
 
         <TextView
             android:background="#FFFFFF"
             android:id="@+id/textView7"
             android:layout_width="368dp"
-            android:paddingTop="5dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/NumKey"
             android:textColor="@color/blue"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextIncludeIngredients"
-            android:layout_marginStart="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextIncludeIngredients" />
 
 
 
