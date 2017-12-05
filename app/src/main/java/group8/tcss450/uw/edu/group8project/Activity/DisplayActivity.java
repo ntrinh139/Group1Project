@@ -38,7 +38,9 @@ import group8.tcss450.uw.edu.group8project.R;
  * This class display user's email and the feature "search recipes"
  * after successfully signing in
  */
-public class DisplayActivity extends AppCompatActivity implements SurveyFragment.OnFragmentInteractionListener,
+public class DisplayActivity extends AppCompatActivity implements
+                                    HomeFragment.OnFragmentInteractionListenerHome,
+                                    SurveyFragment.OnFragmentInteractionListener,
                                     DisplayFragment.OnFragmentInteractionListener2,
                                     SearchFragment.OnFragmentInteractionListener3,
                                     FavoriteFragment.OnFragmentInteractionListener4 {
@@ -205,6 +207,21 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+    }
+
+    @Override
+    public void onFragmentInteractionHome(String jsonObject) {
+
+        DisplayFragment f = new DisplayFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("Json", jsonObject);
+        f.setArguments(args);
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.DisplayActivity, f)
+                .addToBackStack(null);
+        transaction.commit();
 
     }
 

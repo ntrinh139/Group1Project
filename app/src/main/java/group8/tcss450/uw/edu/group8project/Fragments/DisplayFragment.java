@@ -2,6 +2,7 @@ package group8.tcss450.uw.edu.group8project.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,8 @@ public class DisplayFragment extends Fragment implements View.OnClickListener{
         LinearLayout linearLayout = getActivity().findViewById(R.id.fragmentDisplay);
 
         try {
-            for (int i = 0; i < jsonObject.getInt("number") && i < 14 ; i++) {
+            Log.d("TAG", "XXXXXXXXXXx   "+ jsonObject.getInt("number"));
+            for (int i = 0; i < jsonObject.getInt("number")  ; i++) {
 
                 WebView web = new WebView(getContext());
 
