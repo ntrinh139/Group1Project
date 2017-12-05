@@ -1,10 +1,10 @@
 package group8.tcss450.uw.edu.group8project.Activity;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +47,7 @@ public class SingleRecipeActivity extends AppCompatActivity {
         final DatabaseReference myRef = database.getReference("Users").child(user.getUid());
 
 
-        Button savebutton = (Button) findViewById(R.id.Savebutton);
+        FloatingActionButton savebutton = (FloatingActionButton) findViewById(R.id.Savebutton);
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

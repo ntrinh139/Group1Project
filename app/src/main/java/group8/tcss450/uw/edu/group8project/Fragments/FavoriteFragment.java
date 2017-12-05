@@ -3,7 +3,6 @@ package group8.tcss450.uw.edu.group8project.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +43,7 @@ public class FavoriteFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef;
 
+
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -59,9 +59,8 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-        favorites = v.findViewById(R.id.favorites);
-        arrayAdapter = new ArrayAdapter<String>(v.getContext(),
-                android.R.layout.simple_list_item_1, (ArrayList) recipeArray);
+        favorites = (ListView) v.findViewById(R.id.favorites);
+        arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, (ArrayList) recipeArray);
         favorites.setAdapter(arrayAdapter);
 
 
@@ -72,8 +71,8 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 recipeArray.clear();
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    String value = (String) child.getValue();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String value = String.valueOf(child.getValue());
                     new FoodAPI().execute("/recipes/" + value + "/summary");
 
                 }
@@ -85,6 +84,7 @@ public class FavoriteFragment extends Fragment {
                 System.out.println("Failed to read value." + databaseError.toException());
             }
         });
+
 
         return v;
     }
@@ -149,7 +149,7 @@ public class FavoriteFragment extends Fragment {
                 String line = "";
 
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
+                    buffer.append(line + "\n");
                 }
 
 
@@ -189,25 +189,4 @@ public class FavoriteFragment extends Fragment {
             FavoriteFragment.this.reloadList(object);
         }
     }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if(getView() == null){
-            return;
-        }
-
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                return event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK;
-            }
-        });
-    }
-
 }
