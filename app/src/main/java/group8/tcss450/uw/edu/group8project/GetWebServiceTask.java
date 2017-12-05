@@ -45,7 +45,7 @@ public class GetWebServiceTask extends AsyncTask<String, Void, Integer> {
         if(result < 300) {
             delegate.handleSuccess();
         } else {
-            delegate.handleFailure();
+            delegate.handleFailure(result);
         }
     }
 }

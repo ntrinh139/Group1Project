@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatTextView;
@@ -16,12 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
+import group8.tcss450.uw.edu.group8project.GetWebServiceTask;
 import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
 import group8.tcss450.uw.edu.group8project.R;
 
@@ -47,7 +43,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox rememberMeCheckBox;
 
     private InputValidation inputValidation;
-    private FirebaseAuth mAuth;
     private String email;
     private String password;
     private SharedPreferences settings;
@@ -79,7 +74,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //initialize objects
         inputValidation = new InputValidation(activity);
-        mAuth = FirebaseAuth.getInstance();
         settings = getSharedPreferences("FoodRecipes", MODE_PRIVATE);
         String currentUserEmail = settings.getString("email", null);
         if (currentUserEmail != null) {
@@ -101,34 +95,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     email = edittextEmail.getText().toString().trim();
                     password = edittextPassword.getText().toString();
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    // [START_EXCLUDE]
-
-                                    if (!task.isSuccessful()) {
-                                        handleFailure();
-
-                                    } else {
-                                        if (!mAuth.getCurrentUser().isEmailVerified()) {
-                                            Toast.makeText(activity, "This email address has not been verified.", Toast.LENGTH_LONG).show();
-                                            emailVerification();
-                                        } else {
-                                            if (rememberMeCheckBox.isChecked()) {
-                                                SharedPreferences.Editor editor = settings.edit();
-                                                editor.putString("email", edittextEmail.getText().toString().trim());
-                                                editor.putBoolean("isLoggedIn", true);
-                                                // Commit the edits!
-                                                editor.commit();
-                                            }
-                                            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-                                            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-                                            startActivity(accountsIntent);
-                                        }
-                                    }
-                                }
-                            });
+                    GetWebServiceTask task = new GetWebServiceTask();
+                    task.execute("http://cssgate.insttech.washington.edu/~davidmk/login.php", email, password);
+                    task.delegate = this;
                 }
                 break;
 
@@ -145,25 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Users need to verify their email before logging in
      */
     private void emailVerification() {
-        // Send verification email
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
-                                    "Verification email sent to " + user.getEmail()
-                                            + "\nPlease verify your email before logging in",
-                                    Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Toast.makeText(LoginActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
     /*
@@ -203,13 +154,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void handleSuccess() {
 
-
+            if (rememberMeCheckBox.isChecked()) {
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("email", edittextEmail.getText().toString().trim());
+                editor.putBoolean("isLoggedIn", true);
+                // Commit the edits!
+                editor.commit();
+            }
+            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+            startActivity(accountsIntent);
     }
 
     @Override
-    public void handleFailure() {
-        Toast.makeText(activity, "Sign In failed, please try again.",
-                Toast.LENGTH_SHORT).show();
-        return;
+    public void handleFailure(int status) {
+        if (status == 404) {
+            Toast.makeText(activity, "Sign In failed, please try again.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (status == 401) {
+            Toast.makeText(activity, "This email has not been verified yet.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity, "Unknown error occurred, please try again.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

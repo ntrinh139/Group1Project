@@ -8,5 +8,5 @@ public interface GetWebServiceTaskDelegate {
 
     void handleSuccess();
 
-    void handleFailure();
+    void handleFailure(int status);
 }
