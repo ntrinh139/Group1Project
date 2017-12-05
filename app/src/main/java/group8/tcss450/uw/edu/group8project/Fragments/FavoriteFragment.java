@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -35,6 +36,7 @@ import group8.tcss450.uw.edu.group8project.R;
 
 public class FavoriteFragment extends Fragment {
 
+    int id;
     private ListView favorites;
     private List<String> recipeArray = new ArrayList<>();
 
@@ -57,14 +59,14 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_favorite, container, false);
+        final View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-        favorites = (ListView) v.findViewById(R.id.favorites);
+        favorites = v.findViewById(R.id.favorites);
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, (ArrayList) recipeArray);
         favorites.setAdapter(arrayAdapter);
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         myRef = database.getReference("Users").child(user.getUid());
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -74,6 +76,7 @@ public class FavoriteFragment extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String value = String.valueOf(child.getValue());
                     new FoodAPI().execute("/recipes/" + value + "/summary");
+                    arrayAdapter.notifyDataSetChanged();
 
                 }
 
@@ -85,6 +88,38 @@ public class FavoriteFragment extends Fragment {
             }
         });
 
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (!recipeArray.contains(ds.getKey()) && ds.child("Favorited By")
+                            .child(user.getUid()).exists()) {
+                        recipeArray.add(ds.getKey());
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                final ListView lv_fav_recipes = v.findViewById(R.id.favorites);
+                lv_fav_recipes.setAdapter(arrayAdapter);
+                lv_fav_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled (DatabaseError databaseError){
+
+            }
+        });
 
         return v;
     }
@@ -179,6 +214,7 @@ public class FavoriteFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
 
             JSONObject object = null;
             try {

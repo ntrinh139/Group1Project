@@ -249,7 +249,6 @@ public class DisplayActivity extends AppCompatActivity implements SurveyFragment
 
             Intent intent = new Intent(DisplayActivity.this, SingleRecipeActivity .class);
             intent.putExtra("json", result);
-            //intent.putExtra("id", );
             startActivity(intent);
 
 
