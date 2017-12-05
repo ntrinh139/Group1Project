@@ -3,11 +3,11 @@ package group8.tcss450.uw.edu.group8project.Fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -29,8 +29,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import group8.tcss450.uw.edu.group8project.Activity.DisplayActivity;
-import group8.tcss450.uw.edu.group8project.Activity.SingleRecipeActivity;
 import group8.tcss450.uw.edu.group8project.R;
 
 
@@ -71,6 +69,7 @@ public class HomeFragment extends Fragment {
             textViewName = getActivity().findViewById(R.id.welcome);
             String nameFromIntent = getArguments().getString("EMAIL");
             textViewName.setText("Welcome " + nameFromIntent);
+            textViewName.setBackgroundColor(Color.WHITE);
 
 
             AsyncTask<String, Void, String> task = new WebServiceTask();
@@ -158,7 +157,7 @@ public class HomeFragment extends Fragment {
     private void displayVideosListPrompts(JSONObject jsonObject) throws Exception {
 
         LinearLayout linearLayout = getActivity().findViewById(R.id.home_fragment);
-
+        linearLayout.setBackgroundColor(Color.WHITE);
         final JSONArray videos = jsonObject.getJSONArray("videos");
 
         for (int i = 0; i < jsonObject.getInt("totalResults"); i++) {
