@@ -38,8 +38,6 @@ public class SingleRecipeActivity extends AppCompatActivity {
         } catch (Exception e) {}
 
 
-
-
         FirebaseAuth Auth = FirebaseAuth.getInstance();
         FirebaseUser user = Auth.getCurrentUser();
 

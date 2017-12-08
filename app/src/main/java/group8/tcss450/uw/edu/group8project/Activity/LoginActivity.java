@@ -7,15 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import group8.tcss450.uw.edu.group8project.GetWebServiceTask;
 import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
@@ -46,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String email;
     private String password;
     private SharedPreferences settings;
+    private FirebaseAuth mAuth;
+
 
     /*
      * Initialize activity.
@@ -66,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         logIN = (AppCompatButton) findViewById(R.id.logIN);
         signUP = (AppCompatTextView) findViewById(R.id.signUP);
         rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMe);
+        mAuth = FirebaseAuth.getInstance();
 
 
         //initialize listeners
@@ -109,15 +113,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /*
-     * The method will send user an email verification
-     * after checking email and password authentication
-     * Users need to verify their email before logging in
-     */
-    private void emailVerification() {
-
-    }
-
-    /*
      * This method checks if the validation of input
      */
     private boolean areInputsValid(){
@@ -154,16 +149,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void handleSuccess() {
 
-            if (rememberMeCheckBox.isChecked()) {
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("email", edittextEmail.getText().toString().trim());
-                editor.putBoolean("isLoggedIn", true);
-                // Commit the edits!
-                editor.commit();
-            }
-            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-            startActivity(accountsIntent);
+        email = edittextEmail.getText().toString().trim();
+        password = edittextPassword.getText().toString();
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    }
+                });
+
+        if (rememberMeCheckBox.isChecked()) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("email", edittextEmail.getText().toString().trim());
+            editor.putBoolean("isLoggedIn", true);
+            // Commit the edits!
+            editor.commit();
+        }
+        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+        startActivity(accountsIntent);
     }
 
     @Override

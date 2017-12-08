@@ -8,7 +8,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import group8.tcss450.uw.edu.group8project.GetWebServiceTask;
 import group8.tcss450.uw.edu.group8project.GetWebServiceTaskDelegate;
@@ -42,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private AppCompatButton signUP;
     private AppCompatTextView logIN;
+    private FirebaseAuth mAuth;
 
     private InputValidation inputValidation;
 
@@ -74,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //initialize objects
         inputValidation = new InputValidation(activity);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     /*
@@ -149,26 +149,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return mybool;
     }
 
-    /*
-     * The method will send user an email verification
-     * after checking email and password authentication
-     * Users need to verify their email before logging in
-     */
-    private void emailVerification() {
-
-
-//        Toast.makeText(RegisterActivity.this,
-//                "Verification email sent to " + user.getEmail()
-//                        + "\nPlease verify your email before logging in",
-//                Toast.LENGTH_SHORT).show();
-//
-//
-//        Log.e("TAG", "sendEmailVerification", task.getException());
-//        Toast.makeText(RegisterActivity.this,
-//                "Failed to send verification email.",
-//                Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onBackPressed() {
 
@@ -178,7 +158,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void handleSuccess() {
         Toast.makeText(activity, "Registration success. \nPlease verify your email",
                 Toast.LENGTH_SHORT).show();
-        emailVerification();
+
+        final String email = edittextEmail.getText().toString().trim();
+        final String password = edittextPassword.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    }
+                });
+
+
     }
 
     @Override
