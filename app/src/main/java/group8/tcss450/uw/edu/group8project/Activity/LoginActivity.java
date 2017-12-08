@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private AppCompatButton logIN;
     private AppCompatTextView signUP;
+    private AppCompatButton resendVerification;
     private CheckBox rememberMeCheckBox;
 
     private InputValidation inputValidation;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String password;
     private SharedPreferences settings;
     private FirebaseAuth mAuth;
+    private String serviceName = null;
 
 
     /*
@@ -67,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edittextPassword = (TextInputEditText) findViewById(R.id.edittextPassword);
 
         logIN = (AppCompatButton) findViewById(R.id.logIN);
+        resendVerification = (AppCompatButton) findViewById(R.id.resend);
         signUP = (AppCompatTextView) findViewById(R.id.signUP);
         rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMe);
         mAuth = FirebaseAuth.getInstance();
@@ -75,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //initialize listeners
         logIN.setOnClickListener(this);
         signUP.setOnClickListener(this);
+        resendVerification.setOnClickListener(this);
+
 
         //initialize objects
         inputValidation = new InputValidation(activity);
@@ -92,11 +97,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     @Override
     public void onClick(View v){
+        if(serviceName != null) {
+            return;
+        }
         switch (v.getId()){
             case R.id.logIN:
-                if (!areInputsValid()) {
+                if (!areInputsValid(true)) {
                     break;
                 } else {
+                    serviceName = "login";
                     email = edittextEmail.getText().toString().trim();
                     password = edittextPassword.getText().toString();
                     GetWebServiceTask task = new GetWebServiceTask();
@@ -109,18 +118,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
                 break;
+
+            case R.id.resend:
+                if (!areInputsValid(false)) {
+                    break;
+                } else {
+                    serviceName = "resendverification";
+                    email = edittextEmail.getText().toString().trim();
+                    GetWebServiceTask task = new GetWebServiceTask();
+                    task.execute("http://cssgate.insttech.washington.edu/~davidmk/resendverification.php", email, "");
+                    task.delegate = this;
+                }
         }
     }
 
     /*
      * This method checks if the validation of input
      */
-    private boolean areInputsValid(){
+    private boolean areInputsValid(boolean shouldCheckPassword){
         boolean mybool = true;
 
 
         //check if password field is filled.
-        if (!inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
+        if (shouldCheckPassword && !inputValidation.isTextEditFilled(edittextPassword, layoutPassword, getString(R.string.error_empty_password))) {
             edittextPassword.requestFocus();
             mybool = false;
         }
@@ -148,43 +168,61 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void handleSuccess() {
+        if (serviceName.equals("login")) {
 
-        email = edittextEmail.getText().toString().trim();
-        password = edittextPassword.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            email = edittextEmail.getText().toString().trim();
+            password = edittextPassword.getText().toString();
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
-                    }
-                });
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-        if (rememberMeCheckBox.isChecked()) {
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("email", edittextEmail.getText().toString().trim());
-            editor.putBoolean("isLoggedIn", true);
-            // Commit the edits!
-            editor.commit();
+                        }
+                    });
+
+            if (rememberMeCheckBox.isChecked()) {
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("email", edittextEmail.getText().toString().trim());
+                editor.putBoolean("isLoggedIn", true);
+                // Commit the edits!
+                editor.commit();
+            }
+            Intent accountsIntent = new Intent(activity, DisplayActivity.class);
+            accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
+            startActivity(accountsIntent);
+        } else {
+            Toast.makeText(activity, "Verification email sent.",
+                    Toast.LENGTH_SHORT).show();
         }
-        Intent accountsIntent = new Intent(activity, DisplayActivity.class);
-        accountsIntent.putExtra("EMAIL", edittextEmail.getText().toString().trim());
-        startActivity(accountsIntent);
+        serviceName = null;
     }
 
     @Override
     public void handleFailure(int status) {
-        if (status == 404) {
-            Toast.makeText(activity, "Sign In failed, please try again.",
-                    Toast.LENGTH_SHORT).show();
-        } else if (status == 401) {
-            Toast.makeText(activity, "This email has not been verified yet.",
-                    Toast.LENGTH_SHORT).show();
+        if (serviceName.equals("login")) {
+            if (status == 404) {
+                Toast.makeText(activity, "Sign In failed, please try again.",
+                        Toast.LENGTH_SHORT).show();
+            } else if (status == 401) {
+                Toast.makeText(activity, "This email has not been verified yet.",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Unknown error occurred, please try again.",
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(activity, "Unknown error occurred, please try again.",
-                    Toast.LENGTH_SHORT).show();
+            if (status == 404) {
+                Toast.makeText(activity, "Email not found",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, "Unknown Error",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
+        serviceName = null;
 
     }
 }
