@@ -16,15 +16,32 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:textColor="@color/red"
-        android:textSize="25sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:background="#FFFFFF"
+        android:text="Recipe Videos"
+        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
         android:layout_marginBottom="80dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -32,9 +49,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        app:layout_constraintTop_toBottomOf="@+id/video"
         app:layout_constraintVertical_bias="0.0"
-        tools:context=".Activity.DisplayActivity">
+        tools:context=".Activity.DisplayActivity"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.0">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
